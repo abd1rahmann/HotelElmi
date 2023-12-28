@@ -1,7 +1,8 @@
-﻿using AbdiHotelConsole.Data;
+﻿using  AbdiHotelConsole.Data;
+using AbdiHotelLibrary;
 
 
-namespace AbdiHotelConsole
+namespace  AbdiHotelConsole
 {
     public class Program
     {
@@ -10,8 +11,11 @@ namespace AbdiHotelConsole
             var app = new Application();
             app.Run();
 
-            var rec = new Reception();
-            rec.ReceptionMenu();
+            using (var dbContext = new ApplicationDbContext())
+            {
+                var rec = new Reception();
+                rec.ReceptionMenu();
+            }
         }
     }
 }
