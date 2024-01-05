@@ -1,4 +1,6 @@
-﻿using AbdiHotelConsole.GuestRepository;
+﻿using AbdiHotelConsole.Data;
+using AbdiHotelConsole.GuestRepository;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
@@ -10,30 +12,65 @@ namespace  AbdiHotelConsole.BookingRepository
 {
     public class BookingMenu
     {
-        public static void BookingMenuChoice() 
+        public void BookingMenuChoice() 
         {
-                Console.WriteLine("Gäst\n\n");
-                Console.WriteLine("1. Lägg till gäst\n2. Visa gäst\n3. Uppdatera information om gäst\n4. Ta bort gäst");
+                Console.WriteLine(@"
+$$$$$$$\            $$\                 $$\                     
+$$  __$$\           $$ |                \__|                    
+$$ |  $$ | $$$$$$\  $$ |  $$\ $$$$$$$\  $$\ $$$$$$$\   $$$$$$\  
+$$$$$$$\ |$$  __$$\ $$ | $$  |$$  __$$\ $$ |$$  __$$\ $$  __$$\ 
+$$  __$$\ $$ /  $$ |$$$$$$  / $$ |  $$ |$$ |$$ |  $$ |$$ /  $$ |
+$$ |  $$ |$$ |  $$ |$$  _$$<  $$ |  $$ |$$ |$$ |  $$ |$$ |  $$ |
+$$$$$$$  |\$$$$$$  |$$ | \$$\ $$ |  $$ |$$ |$$ |  $$ |\$$$$$$$ |
+\_______/  \______/ \__|  \__|\__|  \__|\__|\__|  \__| \____$$ |
+                                                      $$\   $$ |
+                                                      \$$$$$$  |
+                                                       \______/ 
+                                                                                        
+");
+            Console.WriteLine("\n===================================================================================================================\n");
+            Console.WriteLine("1. Skapa bokning\n2. Visa bokning\n3. Uppdatera information om bokning\n4. Avsluta bokning\n5. Gå tillbaka ett steg");
 
                 var choice = Console.ReadLine();
-                /*switch (choice)
+                var options = new DbContextOptionsBuilder<ApplicationDbContext>();
+                Console.Clear();
+
+                options.UseSqlServer("Server=localhost;Database=AbdiHotel;Trusted_Connection=True;TrustServerCertificate=true;");
+                using (var dbContext = new ApplicationDbContext(options.Options)) 
+                {
+                switch (choice)
                 {
                     case "1":
-                        CreateGuest.CreateNewGuest();
+                        var createBooking = new CreateBooking(dbContext);
+                        createBooking.NewBooking();
                         break;
 
                     case "2":
-                        ShowGuest.DisplayGuest();
+                        var showBooking = new ShowBooking(dbContext);
+                        showBooking.DisplayBooking();
                         break;
 
                     case "3":
-                        UpdateGuest.Update();
+                        var updateBooking = new UpdateBooking(dbContext);
+                        updateBooking.Update();
                         break;
 
                     case "4":
-                        DeleteGuest.Delete();
+                        var deleteBooking = new DeleteBooking(dbContext);
+                        deleteBooking.Delete();
                         break;
-                }*/
-         }
+
+                    case "5":
+                        var rec = new Reception();
+                        rec.ReceptionMenu();
+                        break;
+
+                    default:
+                        Console.WriteLine("Välj ett av alternativen");
+                        break;
+                }
+            }
+
+        }
     }
 }

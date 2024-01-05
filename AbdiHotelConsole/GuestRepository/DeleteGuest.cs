@@ -1,4 +1,4 @@
-﻿using  AbdiHotelConsole.Data;
+﻿using AbdiHotelConsole.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace  AbdiHotelConsole.GuestRepository
+namespace AbdiHotelConsole.GuestRepository
 {
     public class DeleteGuest
     {
@@ -21,7 +21,17 @@ namespace  AbdiHotelConsole.GuestRepository
             Console.WriteLine("Ta bort en gäst");
             Console.WriteLine("=====================");
 
-            // Vilken person ska raderas?
+            Console.WriteLine("\nTryck på '1' för att gå tillbaka ett steg, eller klicka 'enter' för att gå vidare.");
+
+            string back = Console.ReadLine();
+
+            if (back == "1")
+            {
+                Console.Clear();
+                var backTo = new GuestMenu();
+                backTo.GuestMenuChoice();
+            }
+
             foreach (var guest in _dbContext.Guest)
             {
                 Console.WriteLine($"Förnamn: {guest.GuestFirstName}");
@@ -31,12 +41,21 @@ namespace  AbdiHotelConsole.GuestRepository
                 Console.WriteLine($"Efternamn: {guest.IsActive}");
             }
 
-            Console.WriteLine("Välj Id på den gäst som du vill ta bort");
+            Console.WriteLine("Välj Id på den gäst som du vill ta inaktivera");
             var guestIdToDelete = Convert.ToInt32(Console.ReadLine());
-            var guestToDelete = _dbContext.Guest.First(p => p.Id == guestIdToDelete);
-            _dbContext.Guest.Remove(guestToDelete);
+            var guestToDelete = _dbContext.Guest.First(p => p.GuestId == guestIdToDelete);
+            guestToDelete.IsActive = false;
 
+            Console.WriteLine("Gästen är inaktiverad!");
             _dbContext.SaveChanges();
+
+           
+
+
+
+            Console.Clear();
+            var reception = new Reception();
+            reception.ReceptionMenu();
         }
     }
 }

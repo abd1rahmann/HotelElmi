@@ -24,11 +24,11 @@ namespace AbdiHotelLibrary.Migrations
 
             modelBuilder.Entity("AbdiHotelConsole.Data.Booking", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("BookingId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BookingId"));
 
                     b.Property<DateTime>("CheckInDate")
                         .HasColumnType("datetime2");
@@ -39,18 +39,21 @@ namespace AbdiHotelLibrary.Migrations
                     b.Property<int>("GuestId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.Property<int>("RoomId")
+                        .HasColumnType("int");
+
+                    b.HasKey("BookingId");
 
                     b.ToTable("Booking");
                 });
 
             modelBuilder.Entity("AbdiHotelConsole.Data.Guest", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("GuestId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GuestId"));
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -71,18 +74,18 @@ namespace AbdiHotelLibrary.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.HasKey("Id");
+                    b.HasKey("GuestId");
 
                     b.ToTable("Guest");
                 });
 
             modelBuilder.Entity("AbdiHotelConsole.Data.Invoice", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("InvoiceId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("InvoiceId"));
 
                     b.Property<int>("Amount")
                         .HasColumnType("int");
@@ -111,18 +114,21 @@ namespace AbdiHotelLibrary.Migrations
                     b.Property<bool>("Payed")
                         .HasColumnType("bit");
 
-                    b.HasKey("Id");
+                    b.HasKey("InvoiceId");
 
                     b.ToTable("Invoice");
                 });
 
             modelBuilder.Entity("AbdiHotelConsole.Data.Room", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("RoomId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoomId"));
+
+                    b.Property<int>("ExtraBeds")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsAvailable")
                         .HasColumnType("bit");
@@ -134,7 +140,7 @@ namespace AbdiHotelLibrary.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("RoomId");
 
                     b.ToTable("Room");
                 });

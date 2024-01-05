@@ -4,8 +4,6 @@ namespace  AbdiHotelConsole.Data
 {
     public class ApplicationDbContext : DbContext
     {
-        // 6: Create DBContext(boiler plate code). Create options & connectionstring variables(boiler plate code).
-
         public DbSet<Guest> Guest { get; set; }
         public DbSet<Booking> Booking { get; set; }
         public DbSet<Room> Room { get; set; }
@@ -13,7 +11,7 @@ namespace  AbdiHotelConsole.Data
 
         public ApplicationDbContext()
         {
-            // en tom konstruktor behövs för att skapa migrations
+            
         }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -21,7 +19,7 @@ namespace  AbdiHotelConsole.Data
         {
         }
 
-        // Denna behövs första gången man kör för att skapa databasen!
+      
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)

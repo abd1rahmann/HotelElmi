@@ -19,11 +19,26 @@ namespace  AbdiHotelConsole.GuestRepository
             _dbContext = dbContext;
         }
 
+        
         public void CreateNewGuest()
         {
             
-                Console.WriteLine("Lägg till ny gäst\n\n");
-                var guest = new Guest();
+            var guest = new Guest();
+
+            Console.WriteLine("Lägg till ny gäst\n\n");
+            Console.WriteLine("\nTryck på '1' för att gå tillbaka ett steg, eller klicka 'enter' för att gå vidare.");
+
+            string back = Console.ReadLine();
+
+            if (back == "1")
+            {
+                Console.Clear();
+                var backTo = new GuestMenu();
+                backTo.GuestMenuChoice();
+            }
+          
+            
+               
                 Console.Write("Ange gästens förnamn: ");
                 string guestFirstName = Console.ReadLine();
 
@@ -33,7 +48,7 @@ namespace  AbdiHotelConsole.GuestRepository
                 Console.Write("Ange gästens e-postadress: ");
                 string guestEmail = Console.ReadLine();
 
-                Console.Write("Ange faktureringsadress: ");
+                Console.Write("Ange gästens adress: ");
                 string address = Console.ReadLine();
 
 
@@ -45,37 +60,17 @@ namespace  AbdiHotelConsole.GuestRepository
 
                 _dbContext.Guest.Add(guest);
                 _dbContext.SaveChanges();
-           
-             
-        }
 
+                 Console.Clear();
+                 var reception = new Reception();
+                 reception.ReceptionMenu();
+            
+        }
 
     }
 }
 
 
-//public void CreateNewGuest(DbContextOptionsBuilder)
-//{
-//    var guest = new Guest();
-//    Console.Write("Ange gästens förnamn: ");
-//    string guestFirstName = Console.ReadLine();
-
-//    Console.Write("Ange gästens efternamn: ");
-//    string guestLastName = Console.ReadLine();
-
-//    Console.Write("Ange gästens e-postadress: ");
-//    string guestEmail = Console.ReadLine();
-
-//    Console.Write("Ange faktureringsadress: ");
-//    string billingAddress = Console.ReadLine();
-
-
-//    guest.GuestFirstName = guestFirstName;
-
-//    _dbContext.Guest.Add(guest);
-//    _dbContext.SaveChanges();
-
-//}
 
 
 

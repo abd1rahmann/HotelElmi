@@ -15,22 +15,23 @@ namespace AbdiHotelLibrary.Migrations
                 name: "Booking",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    BookingId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     GuestId = table.Column<int>(type: "int", nullable: false),
+                    RoomId = table.Column<int>(type: "int", nullable: false),
                     CheckInDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CheckOutDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Booking", x => x.Id);
+                    table.PrimaryKey("PK_Booking", x => x.BookingId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Guest",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    GuestId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     GuestFirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     GuestLastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -40,14 +41,14 @@ namespace AbdiHotelLibrary.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Guest", x => x.Id);
+                    table.PrimaryKey("PK_Guest", x => x.GuestId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Invoice",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    InvoiceId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     GuestId = table.Column<int>(type: "int", nullable: false),
                     InvoiceDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -60,22 +61,23 @@ namespace AbdiHotelLibrary.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Invoice", x => x.Id);
+                    table.PrimaryKey("PK_Invoice", x => x.InvoiceId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Room",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    RoomId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RoomNumber = table.Column<int>(type: "int", nullable: false),
                     TypeOfRoom = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsAvailable = table.Column<bool>(type: "bit", nullable: false)
+                    IsAvailable = table.Column<bool>(type: "bit", nullable: false),
+                    ExtraBeds = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Room", x => x.Id);
+                    table.PrimaryKey("PK_Room", x => x.RoomId);
                 });
         }
 

@@ -11,41 +11,61 @@ namespace  AbdiHotelConsole.GuestRepository
     public class GuestMenu
     {
 
-        public static void GuestMenuChoice() 
+        public void GuestMenuChoice() 
         {
-            Console.WriteLine("Gäst\n\n");
-            Console.WriteLine("1. Lägg till gäst\n2. Visa gäst\n3. Uppdatera information om gäst\n4. Ta bort gäst");
+            Console.WriteLine(@" 
+ $$$$$$\    $\ $\              $$\     
+$$  __$$\   \_|\_|             $$ |    
+$$ /  \__| $$$$$$\   $$$$$$$\$$$$$$\   
+$$ |$$$$\  \____$$\ $$  _____\_$$  _|  
+$$ |\_$$ | $$$$$$$ |\$$$$$$\   $$ |    
+$$ |  $$ |$$  __$$ | \____$$\  $$ |$$\ 
+\$$$$$$  |\$$$$$$$ |$$$$$$$  | \$$$$  |
+ \______/  \_______|\_______/   \____/ 
+                                       
+");
+            Console.WriteLine("\n============================================================================================================\n");
+            Console.WriteLine("1. Lägg till gäst\n2. Visa gäst\n3. Uppdatera information om gäst\n4. Avsluta gäst\n5. Gå tillbaka ett steg");
 
             var choice = Console.ReadLine();
             var options = new DbContextOptionsBuilder<ApplicationDbContext>();
+            Console.Clear();
            
             options.UseSqlServer("Server=localhost;Database=AbdiHotel;Trusted_Connection=True;TrustServerCertificate=true;");
             using (var dbContext = new ApplicationDbContext(options.Options))
-            
             {
                 switch (choice)
                 {
+
                     case "1":
+                        var createGuest = new CreateGuest(dbContext);
+                        createGuest.CreateNewGuest();
+                        break;
+                    
+                    case "2":
                         var showGuest = new ShowGuest(dbContext);
                         showGuest.DisplayGuest();
                         break;
-                    default:
+
+                    case "3":
+                        var updateGuest = new UpdateGuest(dbContext);
+                        updateGuest.Update();
                         break;
-                        /*case "1":
-                            CreateGuest.CreateNewGuest();
-                            break;
 
-                        case "2":
-                            ShowGuest.DisplayGuest();
-                            break;
+                    case "4":
+                        var deleteGuest = new DeleteGuest(dbContext);
+                        deleteGuest.Delete();
+                        break;
+                    
+                    case "5":
+                        var rec = new Reception();
+                        rec.ReceptionMenu();
+                        break;
 
-                        case "3":
-                            UpdateGuest.Update();
-                            break;
+                    default:
+                        Console.WriteLine("Välj ett av alternativen");
+                        break;
 
-                        case "4":
-                            DeleteGuest.Delete();
-                            break;*/
                 }
             }
         }

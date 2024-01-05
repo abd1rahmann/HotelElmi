@@ -11,10 +11,11 @@ namespace  AbdiHotelConsole.Data
     public class Room
     {
         [Key]
-        public int Id { get; set; }
+        public int RoomId { get; set; }
         public int RoomNumber { get; set; }
         public string TypeOfRoom { get; set; }
         public bool IsAvailable { get; set; }
+        public int ExtraBeds { get; set; }
 
     }
 }

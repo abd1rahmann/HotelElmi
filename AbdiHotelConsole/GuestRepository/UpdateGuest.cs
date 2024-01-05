@@ -1,4 +1,5 @@
-﻿using  AbdiHotelConsole.Data;
+﻿using AbdiHotelConsole.BookingRepository;
+using  AbdiHotelConsole.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System;
@@ -19,70 +20,79 @@ namespace  AbdiHotelConsole.GuestRepository
         public void Update() 
         {
            
-                Console.WriteLine("(U)PDATE en befintlig person");
+                Console.WriteLine("Uppdatera en gäst");
                 Console.WriteLine("=====================");
+                Console.WriteLine("\nTryck på '1' för att gå tillbaka ett steg, eller klicka 'enter' för att gå vidare.");
 
-                // Vilken person ska uppdateras?
-                foreach (var guest in _dbContext.Guest)
+            string back = Console.ReadLine();
+
+            if (back == "1")
+            {
+                Console.Clear();
+                var backTo = new GuestMenu();
+                backTo.GuestMenuChoice();
+            }
+
+
+            foreach (var guest in _dbContext.Guest)
                 {
-                    Console.WriteLine($"Id: {guest.Id}");
-                    Console.WriteLine($"Namn: {guest.GuestFirstName}");
-                    Console.WriteLine($"Namn: {guest.GuestLastName}");
-                    Console.WriteLine($"Namn: {guest.GuestEmail}");
-                    Console.WriteLine($"Namn: {guest.Address}");
-                    Console.WriteLine($"Namn: {guest.IsActive}");
+                    Console.WriteLine($"Id: {guest.GuestId}");
+                    Console.WriteLine($"Förnamn: {guest.GuestFirstName}");
+                    Console.WriteLine($"Efternamn: {guest.GuestLastName}");
+                    Console.WriteLine($"E-mail: {guest.GuestEmail}");
+                    Console.WriteLine($"Adress: {guest.Address}");
+                    Console.WriteLine($"Status: {guest.IsActive}");
                     Console.WriteLine("====================");
                 }
+                Console.Clear();
 
-                Console.WriteLine("Välj Id på den Person som du vill uppdatera");
+                Console.WriteLine("Välj Id på den gäst som du vill uppdatera");
                 var guestIdToUpdate = Convert.ToInt32(Console.ReadLine());
-                var guestToUpdate = _dbContext.Guest.First(p => p.Id == guestIdToUpdate);
+                var guestToUpdate = _dbContext.Guest.First(p => p.GuestId == guestIdToUpdate);
 
-                // Uppdatera korrekt person
-                Console.WriteLine("Ange namn: ");
+                
+                Console.WriteLine("Ange förnamn: ");
                 var guestFirstNameUpdate = Console.ReadLine();
 
-                Console.WriteLine("Ange ålder: ");
+                Console.WriteLine("Ange efternamn: ");
                 var guestLastNameUpdate = Console.ReadLine();
 
-                Console.WriteLine("Ange skostorlek: ");
+                Console.WriteLine("Ange e-mail: ");
                 var guestEmailUpdate = Console.ReadLine();
 
-                Console.WriteLine("Ange skostorlek: ");
+                Console.WriteLine("Ange adress: ");
                 var guestAddressUpdate = Console.ReadLine();
 
-                Console.WriteLine("Ange gästens status: ");
-                bool guestIsActiveUpdate = true;
+                Console.WriteLine("Ange gästens status (aktiv/ej aktiv): ");
+                string guestIsActiveUpdate = Console.ReadLine();
 
-                string userInput = Console.ReadLine();
+            
+            if (guestIsActiveUpdate.ToLower() == "aktiv")
+            {
+                guestToUpdate.IsActive = true;
+            }
+            else if (guestIsActiveUpdate.ToLower() == "ej aktiv")
+            {
+                guestToUpdate.IsActive = false;
+            }
+            else
+            {
+                Console.WriteLine("Felaktig inmatning. Ange endast 'aktiv' eller 'ej aktiv'.");
+                return; 
+            }
 
-                if (bool.TryParse(userInput, out guestIsActiveUpdate))
-                {
-                    Console.WriteLine("Värdet är giltigt: " + guestIsActiveUpdate);
-                }
-                else
-                {
-                    Console.WriteLine("Felaktig inmatning. Ange endast 'true' eller 'false'.");
-                }
-
-
-                foreach (var guest in _dbContext.Guest)
-                {
-                    Console.WriteLine($"{guest.GuestFirstName}\n{guest.GuestLastName}\n{guest.GuestEmail}\n{guest.Address}\n{guest.IsActive}");
-                }
-                Console.WriteLine("Ange Id på County");
-                var guestIdUpdate = Convert.ToInt32(Console.ReadLine());
-                var guestUpdate = _dbContext.Guest.First(c => c.Id == guestIdUpdate);
-
-                // Mappar input info till rätt person
                 guestToUpdate.GuestFirstName = guestFirstNameUpdate;
                 guestToUpdate.GuestLastName = guestLastNameUpdate;
                 guestToUpdate.GuestEmail = guestEmailUpdate;
                 guestToUpdate.Address = guestAddressUpdate;
-                guestToUpdate.IsActive = guestIsActiveUpdate;
-                _dbContext.SaveChanges();
-           
 
+                _dbContext.SaveChanges();
+
+            Console.WriteLine("Uppdateringen är genomförd!");
+
+            Console.Clear();
+            var reception = new Reception();
+            reception.ReceptionMenu();
         }
     }
 }

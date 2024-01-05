@@ -11,9 +11,12 @@ namespace  AbdiHotelConsole.Data
     public class Booking
     {
        [Key]
-        public int Id { get; set; }
+        public int BookingId { get; set; }
         public int GuestId { get; set; }
+        public int RoomId { get; set; }
         public DateTime CheckInDate { get; set; }
         public DateTime CheckOutDate { get; set; }
+
+
     }
 }

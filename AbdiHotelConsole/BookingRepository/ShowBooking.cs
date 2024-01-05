@@ -1,4 +1,5 @@
 ﻿using  AbdiHotelConsole.Data;
+using AbdiHotelConsole.GuestRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,28 @@ namespace  AbdiHotelConsole.BookingRepository
         public ShowBooking(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
+        }
+
+        public void DisplayBooking() 
+        {
+            foreach (var booking in _dbContext.Booking)
+            {
+                Console.WriteLine($"\nBokning : { booking.CheckInDate} till {booking.CheckOutDate}");
+            }
+
+            Console.WriteLine("\nTryck på '1' för att gå tillbaka ett steg, eller klicka 'enter' för att gå vidare.");
+
+            string back = Console.ReadLine();
+
+            if (back == "1")
+            {
+                Console.Clear();
+                var backTo = new BookingMenu();
+                backTo.BookingMenuChoice();
+            }
+            Console.Clear();
+            var reception = new Reception();
+            reception.ReceptionMenu();
         }
     }
 }

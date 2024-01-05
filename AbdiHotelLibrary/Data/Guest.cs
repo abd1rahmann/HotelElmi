@@ -12,12 +12,13 @@ namespace  AbdiHotelConsole.Data
     public class Guest
     {
         [Key]
-        public int Id { get; set; }
+        public int GuestId { get; set; }
         public string GuestFirstName { get; set; }
         public string GuestLastName { get; set; }
         public string GuestEmail { get; set; }
         public string Address { get; set; }
-        //public List<Invoice> Invoices { get; set; } = new List<Invoice>();
         public bool IsActive { get; set; }
+
+        
     }
 }

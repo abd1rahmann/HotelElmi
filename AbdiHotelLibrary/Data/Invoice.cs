@@ -11,7 +11,7 @@ namespace  AbdiHotelConsole.Data
     public class Invoice
     {
         [Key]
-        public int Id { get; set; }
+        public int InvoiceId { get; set; }
         public int GuestId { get; set; }
         public DateTime InvoiceDate { get; set; }
         public int Amount { get; set; }

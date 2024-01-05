@@ -2,7 +2,7 @@
 using  AbdiHotelConsole.GuestRepository;
 using AbdiHotelLibrary;
 using  AbdiHotelConsole.BookingRepository;
-using  AbdiHotelConsole.Room;
+using  AbdiHotelConsole.RoomRepository;
 using  AbdiHotelConsole.InvoiceRepository;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -17,33 +17,67 @@ namespace  AbdiHotelConsole
 
         public void ReceptionMenu () 
         {
-            Console.WriteLine("+-------------------+");
-            Console.WriteLine("|   Abdi Hotel     |");
-            Console.WriteLine("+-------------------+\n");
-
-            Console.WriteLine("1. Gäst\n2. Rum\n3. Bokning\n4. Faktura");
-            
-
-            string choice = Console.ReadLine();
-            Console.Clear();
-            switch (choice) 
+            int run = 1;
+            while (run == 1)
             {
-                case "1":
-                    GuestMenu.GuestMenuChoice();
-                    break; 
-                
-                case "2":
-                    RoomMenu.RoomMenuChoice();
-                    break; 
+                //var choice = Console.ReadLine();
+                //var options = new DbContextOptionsBuilder<ApplicationDbContext>();
+                //Console.Clear();
+
+
+                Console.WriteLine(@"
+
+     ██╗  ██╗ ██████╗ ████████╗███████╗██╗         ███████╗██╗     ███╗   ███╗██╗
+     ██║  ██║██╔═══██╗╚══██╔══╝██╔════╝██║         ██╔════╝██║     ████╗ ████║██║
+     ███████║██║   ██║   ██║   █████╗  ██║         █████╗  ██║     ██╔████╔██║██║
+     ██╔══██║██║   ██║   ██║   ██╔══╝  ██║         ██╔══╝  ██║     ██║╚██╔╝██║██║
+     ██║  ██║╚██████╔╝   ██║   ███████╗███████╗    ███████╗███████╗██║ ╚═╝ ██║██║
+     ╚═╝  ╚═╝ ╚═════╝    ╚═╝   ╚══════╝╚══════╝    ╚══════╝╚══════╝╚═╝     ╚═╝╚═╝
+                                                                                
+ 
+                         
+");
                
-                case "3":
-                    BookingMenu.BookingMenuChoice();
-                    break;
+
+                Console.WriteLine(" 1. Gäst\n 2. Rum\n 3. Bokning\n 4. Faktura");
+
+                //options.UseSqlServer("Server=localhost;Database=AbdiHotel;Trusted_Connection=True;TrustServerCertificate=true;");
+                //using (var dbContext = new ApplicationDbContext(options.Options)) 
+                //{
+                    string c = Console.ReadLine();
+                    Console.Clear();
+                    switch (c)
+                    {
+                        case "1":
+                            var guest = new GuestMenu();
+                            guest.GuestMenuChoice();
+                            break;
+
+                        case "2":
+                            var room = new RoomMenu();
+                            room.RoomMenuChoice();
+                            break;
+
+                        case "3":
+                            var booking = new BookingMenu();
+                            booking.BookingMenuChoice();
+                            break;
+
+                        case "4":
+                            var invoice = new InvoiceMenu();
+                            invoice.InvoiceGuestMenu();
+                            break;
+
+                        default:
+                            Console.WriteLine("\nFel inmatning! Vänligen välj ett av alternativen.\n");
+                            break;
+                            
+                    }
+
+                //}
                     
-                case "4":
-                    InvoiceMenu.InvoiceGuestMenu();
-                    break;
             }
+            
         }
     }
 }

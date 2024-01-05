@@ -21,10 +21,10 @@ namespace  AbdiHotelConsole.Data
             guests.Add(new Guest { GuestFirstName = "Malin", GuestLastName = "Persson", Address = "Mjölbyplan 11", GuestEmail = "Malin.Persson@hotmail.com", IsActive = true });
             guests.Add(new Guest { GuestFirstName = "Anna", GuestLastName = "Johnsson", Address = "Vimmerbyplan 20", GuestEmail = "Anna.Johnsson@hotmail.com", IsActive = true });
 
-            rooms.Add(new Room { RoomNumber = 101, TypeOfRoom = "Enkelrum" });
-            rooms.Add(new Room { RoomNumber = 102, TypeOfRoom = "Enkelrum" });
-            rooms.Add(new Room { RoomNumber = 103, TypeOfRoom = "Enkelrum" });
-            rooms.Add(new Room { RoomNumber = 104, TypeOfRoom = "Dubbelrum" });
+            rooms.Add(new Room { RoomNumber = 101, TypeOfRoom = "Enkelrum", IsAvailable = true});
+            rooms.Add(new Room { RoomNumber = 102, TypeOfRoom = "Enkelrum", IsAvailable = true});
+            rooms.Add(new Room { RoomNumber = 103, TypeOfRoom = "Enkelrum", IsAvailable = true });
+            rooms.Add(new Room { RoomNumber = 104, TypeOfRoom = "Dubbelrum", IsAvailable = true});
 
 
             
