@@ -39,6 +39,12 @@ namespace AbdiHotelLibrary.Migrations
                     b.Property<int>("GuestId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsPaid")
+                        .HasColumnType("bit");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
                     b.Property<int>("RoomId")
                         .HasColumnType("int");
 
@@ -87,31 +93,16 @@ namespace AbdiHotelLibrary.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("InvoiceId"));
 
-                    b.Property<int>("Amount")
+                    b.Property<int>("BookingId")
                         .HasColumnType("int");
 
-                    b.Property<string>("CustomerAddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CustomerName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CustomerPhone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DueDateUtc")
+                    b.Property<DateTime>("DueDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("GuestId")
+                    b.Property<int>("InvoiceNumber")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("InvoiceDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("Payed")
+                    b.Property<bool>("IsValid")
                         .HasColumnType("bit");
 
                     b.HasKey("InvoiceId");
@@ -132,6 +123,9 @@ namespace AbdiHotelLibrary.Migrations
 
                     b.Property<bool>("IsAvailable")
                         .HasColumnType("bit");
+
+                    b.Property<decimal>("PricePerNight")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("RoomNumber")
                         .HasColumnType("int");

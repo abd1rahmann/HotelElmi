@@ -13,7 +13,10 @@ namespace  AbdiHotelConsole.RoomRepository
     {
         public void RoomMenuChoice() 
         {
-            Console.WriteLine(@"
+            int run = 1;
+            while (run == 1) 
+            {
+                Console.WriteLine(@"
 $$$$$$$\                          
 $$  __$$\                         
 $$ |  $$ |$$\   $$\ $$$$$$\$$$$\  
@@ -25,50 +28,57 @@ $$ |  $$ |\$$$$$$  |$$ | $$ | $$ |
         
 ");
 
-            Console.WriteLine("\n========================================================================================\n");
-            Console.WriteLine("1. Lägg till rum\n2. Visa rum\n3. Uppdatera rum\n4. Ta bort rum\n5. Gå tillbaka ett steg");
+                Console.WriteLine("\n========================================================================================\n");
+                Console.WriteLine("1. Lägg till rum\n2. Visa rum\n3. Uppdatera rum\n4. Inaktivera rum\n5. Återaktivera rum\n0. Gå tillbaka ett steg");
 
-            var choice = Console.ReadLine();
-            var options = new DbContextOptionsBuilder<ApplicationDbContext>();
-            Console.Clear();
+                var choice = Console.ReadLine();
+                var options = new DbContextOptionsBuilder<ApplicationDbContext>();
+                Console.Clear();
 
-            options.UseSqlServer("Server=localhost;Database=AbdiHotel;Trusted_Connection=True;TrustServerCertificate=true;");
-            using (var dbContext = new ApplicationDbContext(options.Options))
+                options.UseSqlServer("Server=localhost;Database=AbdiHotel;Trusted_Connection=True;TrustServerCertificate=true;");
+                using (var dbContext = new ApplicationDbContext(options.Options))
 
-            {
-                switch (choice)
                 {
+                    switch (choice)
+                    {
 
-                    case "1":
-                        var createRoom = new CreateRoom(dbContext);
-                        createRoom.CreateNewRoom();
-                        break;
+                        case "1":
+                            var createRoom = new CreateRoom(dbContext);
+                            createRoom.CreateNewRoom();
+                            break;
 
-                    case "2":
-                        var showRoom = new ShowRoom(dbContext);
-                        showRoom.DisplayRoom();
-                        break;
+                        case "2":
+                            var showRoom = new ShowRoom(dbContext);
+                            showRoom.DisplayRoom();
+                            break;
 
-                    case "3":
-                        var updateRoom = new UpdateRoom(dbContext);
-                        updateRoom.Update();
-                        break;
+                        case "3":
+                            var updateRoom = new UpdateRoom(dbContext);
+                            updateRoom.Update();
+                            break;
 
-                    case "4":
-                        var deleteRoom = new DeleteRoom(dbContext);
-                        deleteRoom.Delete();
-                        break;
-                    case "5":
-                        var rec = new Reception();
-                        rec.ReceptionMenu();
-                        break;
+                        case "4":
+                            var deleteRoom = new DeleteRoom(dbContext);
+                            deleteRoom.Delete();
+                            break;
 
-                    default:
-                        Console.WriteLine("Välj ett av alternativen");
-                        break;
+                        case "5":
+                            var reActive = new ReActivate(dbContext);
+                            reActive.ReActivateRoom();
+                            break;
+                        case "0":
+                            var rec = new Reception();
+                            rec.ReceptionMenu();
+                            break;
 
+                        default:
+                            Console.WriteLine("Välj ett av alternativen");
+                            break;
+
+                    }
                 }
             }
+          
         }
     }
 }

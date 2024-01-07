@@ -47,6 +47,7 @@ namespace AbdiHotelConsole.GuestRepository
             guestToDelete.IsActive = false;
 
             Console.WriteLine("Gästen är inaktiverad!");
+            Console.ReadLine();
             _dbContext.SaveChanges();
 
            

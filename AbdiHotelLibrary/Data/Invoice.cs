@@ -12,13 +12,10 @@ namespace  AbdiHotelConsole.Data
     {
         [Key]
         public int InvoiceId { get; set; }
-        public int GuestId { get; set; }
-        public DateTime InvoiceDate { get; set; }
-        public int Amount { get; set; }
-        public DateTime DueDateUtc { get; set; }
-        public string CustomerName { get; set; } = string.Empty;
-        public string CustomerAddress { get; set; } = string.Empty;
-        public string CustomerPhone { get; set; } = string.Empty;
-        public bool Payed { get; set; }
+        public int BookingId { get; set; }
+        public int InvoiceNumber { get; set; }
+        public DateTime DueDate { get; set; }
+
+        public bool IsValid { get; set; } = true;
     }
 }

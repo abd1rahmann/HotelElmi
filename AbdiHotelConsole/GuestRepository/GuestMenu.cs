@@ -13,7 +13,10 @@ namespace  AbdiHotelConsole.GuestRepository
 
         public void GuestMenuChoice() 
         {
-            Console.WriteLine(@" 
+            int run = 1;
+                while (run == 1) 
+            {
+                Console.WriteLine(@" 
  $$$$$$\    $\ $\              $$\     
 $$  __$$\   \_|\_|             $$ |    
 $$ /  \__| $$$$$$\   $$$$$$$\$$$$$$\   
@@ -24,49 +27,56 @@ $$ |  $$ |$$  __$$ | \____$$\  $$ |$$\
  \______/  \_______|\_______/   \____/ 
                                        
 ");
-            Console.WriteLine("\n============================================================================================================\n");
-            Console.WriteLine("1. Lägg till gäst\n2. Visa gäst\n3. Uppdatera information om gäst\n4. Avsluta gäst\n5. Gå tillbaka ett steg");
+                Console.WriteLine("\n============================================================================================================\n");
+                Console.WriteLine("1. Lägg till gäst\n2. Visa gäst\n3. Uppdatera information om gäst\n4. Avsluta gäst\n5. Återaktivera gäst\n0. Gå tillbaka till huvudmenyn");
 
-            var choice = Console.ReadLine();
-            var options = new DbContextOptionsBuilder<ApplicationDbContext>();
-            Console.Clear();
-           
-            options.UseSqlServer("Server=localhost;Database=AbdiHotel;Trusted_Connection=True;TrustServerCertificate=true;");
-            using (var dbContext = new ApplicationDbContext(options.Options))
-            {
-                switch (choice)
+                var choice = Console.ReadLine();
+                var options = new DbContextOptionsBuilder<ApplicationDbContext>();
+                Console.Clear();
+
+                options.UseSqlServer("Server=localhost;Database=AbdiHotel;Trusted_Connection=True;TrustServerCertificate=true;");
+                using (var dbContext = new ApplicationDbContext(options.Options))
                 {
+                    switch (choice)
+                    {
 
-                    case "1":
-                        var createGuest = new CreateGuest(dbContext);
-                        createGuest.CreateNewGuest();
-                        break;
-                    
-                    case "2":
-                        var showGuest = new ShowGuest(dbContext);
-                        showGuest.DisplayGuest();
-                        break;
+                        case "1":
+                            var createGuest = new CreateGuest(dbContext);
+                            createGuest.CreateNewGuest();
+                            break;
 
-                    case "3":
-                        var updateGuest = new UpdateGuest(dbContext);
-                        updateGuest.Update();
-                        break;
+                        case "2":
+                            var showGuest = new ShowGuest(dbContext);
+                            showGuest.DisplayGuest();
+                            break;
 
-                    case "4":
-                        var deleteGuest = new DeleteGuest(dbContext);
-                        deleteGuest.Delete();
-                        break;
-                    
-                    case "5":
-                        var rec = new Reception();
-                        rec.ReceptionMenu();
-                        break;
+                        case "3":
+                            var updateGuest = new UpdateGuest(dbContext);
+                            updateGuest.Update();
+                            break;
 
-                    default:
-                        Console.WriteLine("Välj ett av alternativen");
-                        break;
+                        case "4":
+                            var deleteGuest = new DeleteGuest(dbContext);
+                            deleteGuest.Delete();
+                            break;
 
+                        case "5":
+                            var reActive = new ReActive(dbContext);
+                            reActive.ReActivateGuest();
+                            break;
+
+                        case "0":
+                            var rec = new Reception();
+                            rec.ReceptionMenu();
+                            break;
+
+                        default:
+                            Console.WriteLine("Välj ett av alternativen");
+                            break;
+
+                    }
                 }
+            
             }
         }
     }

@@ -20,7 +20,9 @@ namespace  AbdiHotelConsole.BookingRepository
         {
             foreach (var booking in _dbContext.Booking)
             {
-                Console.WriteLine($"\nBokning : { booking.CheckInDate} till {booking.CheckOutDate}");
+                Console.WriteLine("============================================================");
+                Console.WriteLine($"Bokning : { booking.CheckInDate} till {booking.CheckOutDate}");
+                Console.WriteLine("============================================================");
             }
 
             Console.WriteLine("\nTryck på '1' för att gå tillbaka ett steg, eller klicka 'enter' för att gå vidare.");

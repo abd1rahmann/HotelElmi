@@ -1,4 +1,4 @@
-﻿using  AbdiHotelConsole.Data;
+﻿using AbdiHotelConsole.Data;
 using AbdiHotelConsole.GuestRepository;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace  AbdiHotelConsole.BookingRepository
+namespace AbdiHotelConsole.BookingRepository
 {
     public class CreateBooking
     {
@@ -19,8 +19,10 @@ namespace  AbdiHotelConsole.BookingRepository
         public void NewBooking()
         {
 
-                var booking = new Booking();
-            Console.WriteLine("");
+            var booking = new Booking();
+            Console.WriteLine("Ny boknig                 ||Enkelrum/kväll 1500SEK||  ||Dubbelrum per kväll 20000SEK||");
+            Console.WriteLine("\n====================================================================================");
+            
             Console.WriteLine("\nTryck på '1' för att gå tillbaka ett steg, eller klicka 'enter' för att gå vidare.");
 
             string back = Console.ReadLine();
@@ -31,79 +33,112 @@ namespace  AbdiHotelConsole.BookingRepository
                 var backTo = new BookingMenu();
                 backTo.BookingMenuChoice();
             }
-            Console.WriteLine($"Samtliga gäster\n");
+            Console.WriteLine($"Gäster\n");
 
-            var activeGuests =
+            var inActiveGuests =
               (from g in _dbContext.Guest
-              
-               where g.IsActive == true
+
+               where g.IsActive == false
                select g).ToList();
 
-            foreach (var guest in activeGuests)
+            foreach (var guest in inActiveGuests)
             {
-                Console.WriteLine($"ID: {guest.GuestId}\nNamn: {guest.GuestLastName}, {guest.GuestFirstName}\n");
+                Console.WriteLine("\n===========================================================================");
+                Console.WriteLine($"ID: {guest.GuestId}\nNamn: {guest.GuestLastName}, {guest.GuestFirstName}");
+                Console.WriteLine("===========================================================================\n");
             }
-                Console.Write("\nAnge gästens Id: ");
+            Console.Write("\nAnge gästens Id: ");
 
 
 
-                var guestId = Convert.ToInt32(Console.ReadLine());
-                var guestIdToBook = _dbContext.Guest.FirstOrDefault(g => g.GuestId  == guestId);
+            var guestId = Convert.ToInt32(Console.ReadLine());
+            var guestIdToBook = _dbContext.Guest.FirstOrDefault(g => g.GuestId == guestId);
 
-                if (guestIdToBook != null)
-                {
-                    booking.GuestId = guestIdToBook.GuestId;
-                }
-                else 
-                {
-                    Console.WriteLine("Gäst ID som du söker finns inte.");
-                return;
-                }
-            Console.WriteLine("=================\n");
+            if (guestIdToBook != null)
+            {
+                booking.GuestId = guestIdToBook.GuestId;
+                guestIdToBook.IsActive = true;
+            }
+            else
+            {
+                Console.WriteLine("\nGäst ID som du söker finns inte. Välj igen!");
+                Console.ReadLine();
+
+            }
+            Console.WriteLine("==============================================================================\n==============================================================================\n==============================================================================\n==============================================================================");
             Console.WriteLine($"Samtliga rum\n");
-            
-            var isAvail = new Room();
-            
 
-            
-            foreach (var room in _dbContext.Room)
+            var availableRooms =
+             (from r in _dbContext.Room
+
+              where r.IsAvailable == true
+              select r).ToList();
+
+            foreach (var room in availableRooms)
             {
-                Console.WriteLine($"ID: {room.RoomId}\nNummer: {room.RoomNumber}\nTyp av rum:{room.TypeOfRoom}\n");
+                Console.WriteLine("\n===========================================================================");
+                Console.WriteLine($"ID: {room.RoomId}\nNummer: {room.RoomNumber}\nTyp av rum:{room.TypeOfRoom}");
+                Console.WriteLine("============================================================================\n");
             }
-           
-            Console.WriteLine("Ange rummets Id: ");
-                var roomId = Convert.ToInt32(Console.ReadLine());
-                var roomIdToBook = _dbContext.Room.FirstOrDefault(r => r.RoomId == roomId);
-                
-                if (roomIdToBook != null) 
-                {
-                    booking.RoomId = roomIdToBook.RoomId;
 
-                }
+            Console.WriteLine("\nAnge rummets Id: ");
+            var roomId = Convert.ToInt32(Console.ReadLine());
+            var roomIdToBook = _dbContext.Room.FirstOrDefault(r => r.RoomId == roomId);
 
-                else
-                {
-                    Console.WriteLine("Rum ID som du söker finns inte.");
-                return;
-                }
+            if (roomIdToBook != null)
+            {
+                booking.RoomId = roomIdToBook.RoomId;
+                roomIdToBook.IsAvailable = false;
 
-            roomIdToBook.IsAvailable = false;
+            }
 
+            else
+            {
+                Console.WriteLine("\nRum ID som du söker finns inte. Välj igen!");
+                Console.ReadLine ();
+            }
 
-            Console.WriteLine("Ange antal nätter för bokningen:");
+            Console.WriteLine("\nAnge antal nätter för bokningen:");
             var numberOfNights = Convert.ToInt32(Console.ReadLine());
 
             booking.CheckInDate = DateTime.Now;
 
             booking.CheckOutDate = booking.CheckInDate.AddDays(numberOfNights);
 
-            Console.WriteLine($"Bokning skapad för {guestIdToBook.GuestFirstName} {guestIdToBook.GuestLastName} och rum {roomIdToBook.RoomNumber} från {booking.CheckInDate.ToShortDateString()} - {booking.CheckOutDate.ToShortDateString()}.");
+            var priceToPay = numberOfNights * roomIdToBook.PricePerNight;
+
+            booking.Price = (double)priceToPay;
+
+
+            Console.WriteLine($"\nPris: {priceToPay} SEK");
+            Console.WriteLine("\nVälj 1 för att betala nu eller 2 för att få betalningen på faktura:");
+            string payMent = Console.ReadLine();
+
+            if ( payMent == "1" ) 
+            { 
+            booking.IsPaid = true;
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("\nBetalningen är genomförd!$$$");
+                Console.ResetColor();
+            }
+            else if ( payMent == "2" ) 
+            {
+                booking.IsPaid = false;
+                Console.WriteLine("\nGästen ska få faktura. Välj 'Faktura' i huvudmenyn och sedan 'Skapa faktura' för att registrera en faktura.");
+            }
+            else if ( payMent != "2" || payMent != "1" ) 
+            {
+                Console.WriteLine("Välj ett av alternativen");
+                Console.ReadLine();
+            }
+
+            Console.WriteLine($"\nBokning skapad för {guestIdToBook.GuestFirstName} {guestIdToBook.GuestLastName} och rum {roomIdToBook.RoomNumber} från {booking.CheckInDate.ToShortDateString()} - {booking.CheckOutDate.ToShortDateString()}.");
             Console.ReadLine();
 
-            guestIdToBook.IsActive = false;
 
-                _dbContext.Booking.Add(booking);
-                _dbContext.SaveChanges();
+
+            _dbContext.Booking.Add(booking);
+            _dbContext.SaveChanges();
 
             Console.Clear();
             var reception = new Reception();

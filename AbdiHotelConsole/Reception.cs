@@ -20,10 +20,7 @@ namespace  AbdiHotelConsole
             int run = 1;
             while (run == 1)
             {
-                //var choice = Console.ReadLine();
-                //var options = new DbContextOptionsBuilder<ApplicationDbContext>();
-                //Console.Clear();
-
+               
 
                 Console.WriteLine(@"
 
@@ -41,9 +38,7 @@ namespace  AbdiHotelConsole
 
                 Console.WriteLine(" 1. Gäst\n 2. Rum\n 3. Bokning\n 4. Faktura");
 
-                //options.UseSqlServer("Server=localhost;Database=AbdiHotel;Trusted_Connection=True;TrustServerCertificate=true;");
-                //using (var dbContext = new ApplicationDbContext(options.Options)) 
-                //{
+                
                     string c = Console.ReadLine();
                     Console.Clear();
                     switch (c)
@@ -65,7 +60,7 @@ namespace  AbdiHotelConsole
 
                         case "4":
                             var invoice = new InvoiceMenu();
-                            invoice.InvoiceGuestMenu();
+                            invoice.InvoiceMenuChoice();
                             break;
 
                         default:
@@ -74,8 +69,6 @@ namespace  AbdiHotelConsole
                             
                     }
 
-                //}
-                    
             }
             
         }

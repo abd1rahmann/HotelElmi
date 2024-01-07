@@ -20,7 +20,9 @@ namespace AbdiHotelLibrary.Migrations
                     GuestId = table.Column<int>(type: "int", nullable: false),
                     RoomId = table.Column<int>(type: "int", nullable: false),
                     CheckInDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CheckOutDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CheckOutDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Price = table.Column<double>(type: "float", nullable: false),
+                    IsPaid = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -50,14 +52,10 @@ namespace AbdiHotelLibrary.Migrations
                 {
                     InvoiceId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    GuestId = table.Column<int>(type: "int", nullable: false),
-                    InvoiceDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Amount = table.Column<int>(type: "int", nullable: false),
-                    DueDateUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CustomerName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CustomerAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CustomerPhone = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Payed = table.Column<bool>(type: "bit", nullable: false)
+                    BookingId = table.Column<int>(type: "int", nullable: false),
+                    InvoiceNumber = table.Column<int>(type: "int", nullable: false),
+                    DueDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsValid = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -73,7 +71,8 @@ namespace AbdiHotelLibrary.Migrations
                     RoomNumber = table.Column<int>(type: "int", nullable: false),
                     TypeOfRoom = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsAvailable = table.Column<bool>(type: "bit", nullable: false),
-                    ExtraBeds = table.Column<int>(type: "int", nullable: false)
+                    ExtraBeds = table.Column<int>(type: "int", nullable: false),
+                    PricePerNight = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {

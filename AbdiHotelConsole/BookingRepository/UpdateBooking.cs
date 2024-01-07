@@ -33,10 +33,12 @@ namespace  AbdiHotelConsole.BookingRepository
 
             foreach (var booking in _dbContext.Booking)
             {
-                Console.WriteLine($"\nId: {booking.BookingId}");
+                Console.WriteLine("\n==========================================");
+                Console.WriteLine($"Id: {booking.BookingId}");
                 Console.WriteLine($"Incheckning: {booking.CheckInDate}");
-               Console.WriteLine($"Utcheckning: {booking.CheckOutDate}\n");
-                
+                Console.WriteLine($"Utcheckning: {booking.CheckOutDate}");
+                Console.WriteLine("============================================\n");
+
             }
             
 

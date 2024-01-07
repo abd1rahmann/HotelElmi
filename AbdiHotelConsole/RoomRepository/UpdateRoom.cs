@@ -58,24 +58,21 @@ namespace AbdiHotelConsole.RoomRepository
 
             }
 
-            Console.WriteLine("Ange ny status: ");
-            var IsAvailableUpdate = Console.ReadLine();
-
-
-            if (IsAvailableUpdate.ToLower() == "tillgänglig")
+            Console.WriteLine("Ange ny status. Tryck 1 för att aktivera eller 2 för att inaktivera: ");
+            var choice = Console.ReadLine();
+            switch (choice)
             {
-                _ = roomToUpdate.IsAvailable;
-            }
-            else if (IsAvailableUpdate.ToLower() == "ej tillgänglig")
-            {
-                roomToUpdate.IsAvailable = false;
-            }
-            else
-            {
-                Console.WriteLine("Felaktig inmatning. Ange endast 'tillgänglig' eller 'ej tillgänglig'.");
-                return;
-            }
+                case "1":
+                        roomToUpdate.IsAvailable = true;
+                        Console.WriteLine("Rummet är aktiv!");
+                    break;
 
+                    case "2":
+                    roomToUpdate.IsAvailable = false;
+                    Console.WriteLine("Rummet är inaktiverad!");
+                    break;
+            }
+            
             Console.WriteLine("Tryck '1' för att kunna lägga till extra säng i ett rum (OBS! Detta gäller endast dubbelrum).\nOm inte, fortsätt vidare.");
             string extraSäng = Console.ReadLine();
             if (extraSäng == "1")

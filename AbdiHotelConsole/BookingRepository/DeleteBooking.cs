@@ -19,7 +19,7 @@ namespace  AbdiHotelConsole.BookingRepository
         public void Delete() 
         {
                 Console.WriteLine("Ta bort en bokning");
-                Console.WriteLine("=====================");
+                Console.WriteLine("=================================================================================");
 
             Console.WriteLine("\nTryck på '1' för att gå tillbaka ett steg, eller klicka 'enter' för att gå vidare.");
 
@@ -34,7 +34,6 @@ namespace  AbdiHotelConsole.BookingRepository
 
             Console.WriteLine("Välj Id på den bokning som du vill ta bort");
 
-                // Vilken person ska raderas?
                 foreach (var booking in _dbContext.Booking)
                 {
                     Console.WriteLine($": {booking.BookingId}");

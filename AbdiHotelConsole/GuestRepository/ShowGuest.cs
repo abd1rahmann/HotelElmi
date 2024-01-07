@@ -21,7 +21,7 @@ namespace  AbdiHotelConsole.GuestRepository
         public void DisplayGuest() 
         {
             
-            Console.WriteLine("Tryck '1' för att se över aktiva gäster, tryck 2 för att se över samtliga gäster:");
+            Console.WriteLine("Tryck '1' för att se över aktiva gäster, tryck 2 för att se alla gäster:");
            
              bool run = true;
              while (run)

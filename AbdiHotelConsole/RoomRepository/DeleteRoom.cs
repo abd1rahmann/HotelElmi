@@ -18,8 +18,8 @@ namespace  AbdiHotelConsole.RoomRepository
 
         public void Delete()
         {
-            Console.WriteLine("Ta bort ett rum");
-            Console.WriteLine("=====================");
+            Console.WriteLine("Inaktivera rum");
+            Console.WriteLine("=====================================================================================");
             Console.WriteLine("\nTryck på '1' för att gå tillbaka ett steg, eller klicka 'enter' för att gå vidare.");
 
             string back = Console.ReadLine();
@@ -33,12 +33,12 @@ namespace  AbdiHotelConsole.RoomRepository
 
 
 
-            Console.WriteLine("Välj Id på det rum som du vill ta bort");
+            Console.WriteLine("Välj Id på det rum som du vill inaktivera");
 
            
             foreach (var room in _dbContext.Room)
             {
-                Console.WriteLine($"{room.RoomId}");
+                Console.WriteLine($"\nID: {room.RoomId}\nRumsnummer: {room.RoomNumber}\nTyp av rum: {room.TypeOfRoom}\n");
                
             }
 
@@ -46,10 +46,11 @@ namespace  AbdiHotelConsole.RoomRepository
             var roomIdToDelete = Convert.ToInt32(Console.ReadLine());
             var roomToDelete = _dbContext.Room.First(r => r.RoomId == roomIdToDelete);
 
-            _dbContext.Room.Remove(roomToDelete);
+            roomToDelete.IsAvailable = false;
             _dbContext.SaveChanges();
 
-            Console.WriteLine("Bokningen gäller inte längre nu");
+            Console.WriteLine("Rummet är inaktiverat!");
+            Console.ReadLine();
 
             Console.Clear();
             var reception = new Reception();

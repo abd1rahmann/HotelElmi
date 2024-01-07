@@ -25,7 +25,7 @@ namespace  AbdiHotelConsole.GuestRepository
             
             var guest = new Guest();
 
-            Console.WriteLine("Lägg till ny gäst\n\n");
+            Console.WriteLine("Registrera ny gäst\n\n");
             Console.WriteLine("\nTryck på '1' för att gå tillbaka ett steg, eller klicka 'enter' för att gå vidare.");
 
             string back = Console.ReadLine();
@@ -61,7 +61,9 @@ namespace  AbdiHotelConsole.GuestRepository
                 _dbContext.Guest.Add(guest);
                 _dbContext.SaveChanges();
 
-                 Console.Clear();
+            Console.WriteLine("Gästen är registrerad!");
+            Console.ReadLine();
+            Console.Clear();
                  var reception = new Reception();
                  reception.ReceptionMenu();
             
