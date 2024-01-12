@@ -49,9 +49,13 @@ namespace AbdiHotelConsole.BookingRepository
             }
             Console.Write("\nAnge gästens Id: ");
 
+            int guestId = 0;
 
+            while(!int.TryParse(Console.ReadLine(), out guestId))
+            {
+                Console.WriteLine("The input is invalid. Please type a number");
+            }
 
-            var guestId = Convert.ToInt32(Console.ReadLine());
             var guestIdToBook = _dbContext.Guest.FirstOrDefault(g => g.GuestId == guestId);
 
             if (guestIdToBook != null)
