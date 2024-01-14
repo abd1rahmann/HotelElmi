@@ -1,11 +1,4 @@
 ﻿using AbdiHotelConsole.Data;
-using AbdiHotelConsole.GuestRepository;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AbdiHotelConsole.BookingRepository
 {
@@ -20,7 +13,8 @@ namespace AbdiHotelConsole.BookingRepository
         {
 
             var booking = new Booking();
-            Console.WriteLine("Ny boknig                 ||Enkelrum/kväll 1500SEK||  ||Dubbelrum per kväll 20000SEK||");
+
+            Console.WriteLine("Ny bokning                 ||Enkelrum/kväll 1500SEK||  ||Dubbelrum per kväll 20000SEK||");
             Console.WriteLine("\n====================================================================================");
             
             Console.WriteLine("\nTryck på '1' för att gå tillbaka ett steg, eller klicka 'enter' för att gå vidare.");
