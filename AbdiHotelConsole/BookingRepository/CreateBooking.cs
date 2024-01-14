@@ -86,7 +86,14 @@ namespace AbdiHotelConsole.BookingRepository
             }
 
             Console.WriteLine("\nAnge rummets Id: ");
-            var roomId = Convert.ToInt32(Console.ReadLine());
+
+            int roomId = 0;
+
+            while (!int.TryParse(Console.ReadLine(), out roomId))
+            {
+                Console.WriteLine("The input is invalid. Please type a number");
+            }
+
             var roomIdToBook = _dbContext.Room.FirstOrDefault(r => r.RoomId == roomId);
 
             if (roomIdToBook != null)

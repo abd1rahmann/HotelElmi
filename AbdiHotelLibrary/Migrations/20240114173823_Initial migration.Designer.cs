@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AbdiHotelLibrary.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240107224540_Initial migration")]
+    [Migration("20240114173823_Initial migration")]
     partial class Initialmigration
     {
         /// <inheritdoc />
