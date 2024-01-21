@@ -21,7 +21,7 @@ namespace  AbdiHotelConsole
             while (run == 1)
             {
                
-
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(@"
 
      ██╗  ██╗ ██████╗ ████████╗███████╗██╗         ███████╗██╗     ███╗   ███╗██╗
@@ -34,8 +34,8 @@ namespace  AbdiHotelConsole
  
                          
 ");
+                Console.ResetColor();
                
-
                 Console.WriteLine(" 1. Gäst\n 2. Rum\n 3. Bokning\n 4. Faktura");
 
                 
@@ -59,10 +59,9 @@ namespace  AbdiHotelConsole
                             break;
 
                         case "4":
-                            var invoice = new InvoiceMenu();
-                            invoice.InvoiceMenuChoice();
-                            break;
-
+                        var invoice = new InvoiceMenu();
+                        invoice.InvoiceMenuChoice();
+                        break;
                         default:
                             Console.WriteLine("\nFel inmatning! Vänligen välj ett av alternativen.\n");
                             break;

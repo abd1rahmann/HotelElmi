@@ -18,43 +18,53 @@ namespace  AbdiHotelConsole.RoomRepository
 
         public void Delete()
         {
-            Console.WriteLine("Inaktivera rum");
-            Console.WriteLine("=====================================================================================");
-            Console.WriteLine("\nTryck på '1' för att gå tillbaka ett steg, eller klicka 'enter' för att gå vidare.");
+            Console.WriteLine("===========================================================================");
+            Console.WriteLine("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t");
+            Console.WriteLine("\t1. Inaktivera rum");
+            Console.WriteLine("\t0. Huvudmenyn");
+            Console.WriteLine("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t");
+            Console.WriteLine("===========================================================================");
 
-            string back = Console.ReadLine();
-
-            if (back == "1")
+            bool run = true;
+            while   (run) 
             {
-                Console.Clear();
-                var backTo = new RoomMenu();
-                backTo.RoomMenuChoice();
+                string choice = Console.ReadLine();
+                switch (choice)
+                {
+                    case "1":
+                        Console.WriteLine("Välj Id på det rum som du vill inaktivera");
+
+                        foreach (var room in _dbContext.Room)
+                        {
+                            Console.WriteLine($"\nID: {room.RoomId}\nRumsnummer: {room.RoomNumber}\nTyp av rum: {room.TypeOfRoom}\n");
+
+                        }
+
+                        var roomIdToDelete = Convert.ToInt32(Console.ReadLine());
+                        var roomToDelete = _dbContext.Room.First(r => r.RoomId == roomIdToDelete);
+
+                        roomToDelete.IsAvailable = false;
+                        _dbContext.SaveChanges();
+
+                        Console.WriteLine("Rummet är inaktiverat!");
+                        Console.ReadLine();
+                        
+                        Console.Clear();
+                        var rec = new Reception();
+                        rec.ReceptionMenu();
+                        break;
+
+                        case "0":
+                        Console.Clear();
+                        var reception = new Reception();
+                        reception.ReceptionMenu();
+                        break;
+
+                    default:
+                        Console.WriteLine("Fel val! Välj igen");
+                        break;
+                }
             }
-
-
-
-            Console.WriteLine("Välj Id på det rum som du vill inaktivera");
-
-           
-            foreach (var room in _dbContext.Room)
-            {
-                Console.WriteLine($"\nID: {room.RoomId}\nRumsnummer: {room.RoomNumber}\nTyp av rum: {room.TypeOfRoom}\n");
-               
-            }
-
-            
-            var roomIdToDelete = Convert.ToInt32(Console.ReadLine());
-            var roomToDelete = _dbContext.Room.First(r => r.RoomId == roomIdToDelete);
-
-            roomToDelete.IsAvailable = false;
-            _dbContext.SaveChanges();
-
-            Console.WriteLine("Rummet är inaktiverat!");
-            Console.ReadLine();
-
-            Console.Clear();
-            var reception = new Reception();
-            reception.ReceptionMenu();
         }
     }
 }

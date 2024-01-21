@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using AbdiHotelConsole.GuestRepository;
+using System.Net;
 
 namespace  AbdiHotelConsole.RoomRepository
 {
@@ -26,65 +27,90 @@ namespace  AbdiHotelConsole.RoomRepository
 
             var room = new Room();
 
-            Console.WriteLine("Lägg till ny rum\n");
-            Console.WriteLine("====================================================================================");
+           
+            Console.WriteLine("===========================================================================");
+            Console.WriteLine("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t");
+            Console.WriteLine("\t1. Lägg till ett rum");
+            Console.WriteLine("\t0. Huvudmenyn");
+            Console.WriteLine("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t");
+            Console.WriteLine("===========================================================================");
 
-            Console.WriteLine("\nTryck på '1' för att gå tillbaka ett steg, eller klicka 'enter' för att gå vidare.");
+            bool run = true;
 
-            string back = Console.ReadLine();
-
-            if (back == "1")
+            while (run)
             {
-                Console.Clear();
-                var backTo = new RoomMenu();
-                backTo.RoomMenuChoice();
+                string choice = Console.ReadLine();
+
+                switch (choice)
+                {
+                    case "1":
+                        Console.Write("\nAnge rumsnummer: ");
+                        int roomNumber = 0;
+
+                        while (!int.TryParse(Console.ReadLine(), out roomNumber))
+                        {
+                            Console.WriteLine("The input is invalid. Please type a number");
+                        }
+
+                        Console.Write("\nAnge rumstyp (enkelrum/dubbelrum): ");
+                        string typeOfRoom = Console.ReadLine();
+
+                        if (string.IsNullOrWhiteSpace(typeOfRoom))
+                        {
+                            Console.WriteLine("Ogiltigt, försök igen. Alla fält måste fyllas i.");
+                        }
+
+
+                        room.RoomNumber = roomNumber;
+                        room.TypeOfRoom = typeOfRoom;
+                        room.IsAvailable = true;
+
+                        Console.WriteLine("\nAnge pris/kväll: ");
+                        int priceForRoom = Convert.ToInt32(Console.ReadLine());
+                        room.PricePerNight = priceForRoom;
+
+
+
+                        //Console.WriteLine("\nAnge status på rummet (tryck 1 för tillgänglig eller 2 för ej tillgänglig): ");
+                        //string isAvailableStr = Console.ReadLine();
+
+                        //switch (isAvailableStr)
+                        //{
+                        //    case "1":
+                        //        room.IsAvailable = true;
+                        //        break;
+
+                        //    case "2":
+                        //        room.IsAvailable = false;
+                        //        break;
+
+                        //    default:
+                        //        Console.WriteLine("\nTryck endast 1 eller 2!");
+                        //        break;
+                        //}
+
+                        _dbContext.Room.Add(room);
+                        _dbContext.SaveChanges();
+
+                        Console.WriteLine("\nRummet är tillagd!");
+                        Console.ReadLine();
+
+                        Console.Clear();
+                        var rec = new Reception();
+                        rec.ReceptionMenu();
+                        break;
+
+                        case "0":
+                        Console.Clear();
+                        var reception = new Reception();
+                        reception.ReceptionMenu();
+                        break;
+
+                    default:
+                        Console.WriteLine("Fel inmatning!");
+                        break;
+                }
             }
-
-            Console.Write("\nAnge rumsnummer: ");
-            int roomNumber = Convert.ToInt32(Console.ReadLine());
-
-            Console.Write("\nAnge rumstyp (enkelrum/dubbelrum): ");
-            string typeOfRoom = Console.ReadLine();
-
-
-            room.RoomNumber = roomNumber;
-            room.TypeOfRoom = typeOfRoom;
-
-            Console.WriteLine("\nAnge pris/kväll: ");
-            int priceForRoom = Convert.ToInt32(Console.ReadLine());
-            room.PricePerNight = priceForRoom;
-
-
-
-            Console.WriteLine("\nAnge status på rummet (tryck 1 för tillgänglig eller 2 för ej tillgänglig): ");
-            string isAvailableStr = Console.ReadLine();
-
-            switch (isAvailableStr)
-            {
-                case "1":
-                    room.IsAvailable = true;
-                    break;
-
-                    case "2":
-                    room.IsAvailable = false;
-                    break;
-
-                default:
-                    Console.WriteLine("\nTryck endast 1 eller 2!");
-                    break;
-            }
-            
-            _dbContext.Room.Add(room);
-            _dbContext.SaveChanges();
-
-            Console.WriteLine("\nRummet är tillagd!");
-            Console.ReadLine();
-
-            Console.Clear();
-            var reception = new Reception();
-            reception.ReceptionMenu();
         }
-
     }
-
 }

@@ -20,7 +20,13 @@ namespace  AbdiHotelConsole.RoomRepository
 
         public void DisplayRoom()
         {
-            Console.WriteLine("1. Se tillgängliga rum\n2. Se alla rum\n0. Gå tillbaka till menyn\n");
+            Console.WriteLine("===========================================================================");
+            Console.WriteLine("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t");
+            Console.WriteLine("\t1. Se lediga rum");
+            Console.WriteLine("\t2. Se upptagna rum ");
+            Console.WriteLine("\t0. Huvudmenyn");
+            Console.WriteLine("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t");
+            Console.WriteLine("==========================================================================="); 
             bool run = true;
             while (run)
             {
@@ -29,15 +35,15 @@ namespace  AbdiHotelConsole.RoomRepository
 
                 {
                     case "1":
-                        var availableRooms = _dbContext.Room.Where(g => g.IsAvailable == true).ToList();
+                        var availableRooms = _dbContext.Room.Where(r => r.IsAvailable == true).ToList();
                         foreach (var room in availableRooms)
                         {
 
 
                             Console.WriteLine("===============================================");
-                            Console.WriteLine($"Rumsnummer: {room.RoomNumber}                 &");
-                            Console.WriteLine($"Rumstyp: {room.TypeOfRoom}                    &");
-                            Console.WriteLine($"Extra säng/sängar: {room.ExtraBeds}           &");
+                            Console.WriteLine($"Rumsnummer: {room.RoomNumber}                 ");
+                            Console.WriteLine($"Rumstyp: {room.TypeOfRoom}                    ");
+                            Console.WriteLine($"Extra säng/sängar: {room.ExtraBeds}           ");
                             Console.WriteLine("================================================");
                             
                             
@@ -46,12 +52,13 @@ namespace  AbdiHotelConsole.RoomRepository
 
                     case "2":
 
-                        foreach (var room in _dbContext.Room)
+                        var preoccupiedRooms = _dbContext.Room.Where(r => r.IsAvailable == false).ToList();
+                        foreach (var room in preoccupiedRooms)
                         {
                             Console.WriteLine("===============================================");
-                            Console.WriteLine($"Rumsnummer: {room.RoomNumber}                 &");
-                            Console.WriteLine($"Rumstyp: {room.TypeOfRoom}                    &");
-                            Console.WriteLine($"Extra säng/sängar: {room.ExtraBeds}           &");
+                            Console.WriteLine($"Rumsnummer: {room.RoomNumber}                 ");
+                            Console.WriteLine($"Rumstyp: {room.TypeOfRoom}                    ");
+                            Console.WriteLine($"Extra säng/sängar: {room.ExtraBeds}           ");
                             Console.WriteLine("================================================");
 
                         }

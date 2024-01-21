@@ -63,7 +63,7 @@ $$$$$$$  |\$$$$$$  |$$ | \$$\ $$ |  $$ |$$ |$$ |  $$ |\$$$$$$$ |
                             deleteBooking.Delete();
                             break;
 
-                        case "5":
+                        case "0":
                             var rec = new Reception();
                             rec.ReceptionMenu();
                             break;
