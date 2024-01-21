@@ -16,47 +16,63 @@ namespace AbdiHotelConsole.InvoiceRepository
         }
         public void Delete() 
         {
-            Console.WriteLine("Makulera en faktura");
-            Console.WriteLine("=================================================================================");
+            Console.WriteLine("===========================================================================");
+            Console.WriteLine("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t");
+            Console.WriteLine("\t1. Makulera faktura");
+            Console.WriteLine("\t0. Huvudmenyn");
+            Console.WriteLine("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t");
+            Console.WriteLine("===========================================================================");
 
-            Console.WriteLine("\nTryck på '1' för att gå tillbaka ett steg, eller klicka 'enter' för att gå vidare.");
-
-            string back = Console.ReadLine();
-
-            if (back == "1")
+            bool run = true;
+            while (run)
             {
-                Console.Clear();
-                var backTo = new InvoiceMenu();
-                backTo.InvoiceMenuChoice();
+                string choice = Console.ReadLine();
+                switch  (choice) 
+                {
+                    case "1":
+                        
+
+                        foreach (var invoice in _dbContext.Invoice)
+                        {
+                            Console.WriteLine("\n==========================================");
+                            Console.WriteLine($"Id: {invoice.InvoiceId}");
+                            Console.WriteLine($"Incheckning: {invoice.InvoiceNumber}");
+                            Console.WriteLine($"Utcheckning: {invoice.DueDate}");
+                            Console.WriteLine("============================================\n");
+
+                        }
+
+                        Console.WriteLine("\nVälj Id på den fakturan som du vill ta bort");
+                        int invoiceId = 0;
+
+                        while (!int.TryParse(Console.ReadLine(), out invoiceId))
+                        {
+                            Console.WriteLine("Inmatningen är ogiltig. Vänligen ange ett nummer");
+                        }
+                        var invoiceToDelete = _dbContext.Invoice.First(i => i.InvoiceId == invoiceId);
+
+                        invoiceToDelete.IsValid = false;
+                        _dbContext.SaveChanges();
+
+                        Console.WriteLine("Fakturan har tagits bort");
+                        Console.ReadLine();
+
+                        Console.Clear();
+                        var rec = new Reception();
+                        rec.ReceptionMenu();
+                        break;
+
+                        case "0":
+                        Console.Clear();
+                        var reception = new Reception();
+                        reception.ReceptionMenu();
+                        break;
+
+                    default:
+                        Console.WriteLine("Fel val! Välj igen");
+                        break;
+                }
             }
-
-            Console.WriteLine("\nVälj Id på den fakturan som du vill ta bort");
-
-            foreach (var invoice in _dbContext.Invoice)
-            {
-                Console.WriteLine("\n==========================================");
-                Console.WriteLine($"Id: {invoice.InvoiceId}");
-                Console.WriteLine($"Incheckning: {invoice.InvoiceNumber}");
-                Console.WriteLine($"Utcheckning: {invoice.DueDate}");
-                Console.WriteLine("============================================\n");
-
-            }
-
-
-            var invoiceIdToDelete = Convert.ToInt32(Console.ReadLine());
-            var invoiceToDelete = _dbContext.Invoice.First(i => i.InvoiceId == invoiceIdToDelete);
-
-            invoiceToDelete.IsValid = false;
-            _dbContext.SaveChanges();
-
-            Console.WriteLine("Fakturan har tagits bort");
-
-
-
-            Console.Clear();
-            var reception = new Reception();
-            reception.ReceptionMenu();
         }
     }
-    
 }

@@ -20,10 +20,15 @@ namespace  AbdiHotelConsole.GuestRepository
 
         public void DisplayGuest() 
         {
-            
-            Console.WriteLine("Tryck '1' för att se över aktiva gäster, tryck 2 för att se alla gäster:");
-           
-             bool run = true;
+
+            Console.WriteLine("===========================================================================");
+            Console.WriteLine("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t");
+            Console.WriteLine("\t1. Se aktiva gäster");
+            Console.WriteLine("\t2. Se alla gäster");
+            Console.WriteLine("\t0. Huvudmenyn");
+            Console.WriteLine("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t");
+            Console.WriteLine("===========================================================================");
+            bool run = true;
              while (run)
                     {
                     string choice = Console.ReadLine();
@@ -60,8 +65,7 @@ namespace  AbdiHotelConsole.GuestRepository
                         break;
                    
                     default: 
-                        Console.WriteLine("Fel inmatning! Tryck enter för att gå vidare");
-                        
+                        Console.WriteLine("Fel inmatning!");
                         break;
             }
             

@@ -18,27 +18,39 @@ namespace  AbdiHotelConsole.InvoiceRepository
 
         public void DisplayInvoice() 
         {
-            
-            foreach (var invoice in _dbContext.Invoice)
+            Console.WriteLine("===========================================================================");
+            Console.WriteLine("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t");
+            Console.WriteLine("\t1. Visa faktura");
+            Console.WriteLine("\t0. Huvudmenyn");
+            Console.WriteLine("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t");
+            Console.WriteLine("===========================================================================");
+
+            bool run = true;
+            while (run)
             {
-                Console.WriteLine("============================================================");
-                Console.WriteLine($"ID: {invoice.InvoiceId}\nFakturanummer: {invoice.InvoiceNumber}\nFörfallodatum: {invoice.DueDate}");
-                Console.WriteLine("============================================================");
+                string choice = Console.ReadLine();
+                switch (choice)
+                {
+                    case "1":
+                        foreach (var invoice in _dbContext.Invoice)
+                        {
+                            Console.WriteLine("============================================================");
+                            Console.WriteLine($"ID: {invoice.InvoiceId}\nFakturanummer: {invoice.InvoiceNumber}\nFörfallodatum: {invoice.DueDate}");
+                            Console.WriteLine("============================================================");
+                        }
+                        break;
+
+                    case "0":
+                        Console.Clear();
+                        var reception = new Reception();
+                        reception.ReceptionMenu();
+                        break;
+
+                    default:
+                        Console.WriteLine("Fel val! Välj igen");
+                        break;
+                }
             }
-
-            Console.WriteLine("\nTryck på '1' för att gå tillbaka ett steg, eller klicka 'enter' för att gå vidare.");
-
-            string back = Console.ReadLine();
-
-            if (back == "1")
-            {
-                Console.Clear();
-                var backTo = new InvoiceMenu();
-                backTo.InvoiceMenuChoice();
-            }
-            Console.Clear();
-            var reception = new Reception();
-            reception.ReceptionMenu();
         }
     }
 }

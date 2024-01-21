@@ -18,42 +18,60 @@ namespace  AbdiHotelConsole.BookingRepository
 
         public void Delete() 
         {
-                Console.WriteLine("Ta bort en bokning");
-                Console.WriteLine("=================================================================================");
+            Console.WriteLine("===========================================================================");
+            Console.WriteLine("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t");
+            Console.WriteLine("\t1. Ta bort en bokning");
+            Console.WriteLine("\t0. Huvudmenyn");
+            Console.WriteLine("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t");
+            Console.WriteLine("===========================================================================");
 
-            Console.WriteLine("\nTryck på '1' för att gå tillbaka ett steg, eller klicka 'enter' för att gå vidare.");
-
-            string back = Console.ReadLine();
-
-            if (back == "1")
+            bool run = true;   
+            while (run)
             {
-                Console.Clear();
-                var backTo = new BookingMenu();
-                backTo.BookingMenuChoice();
+                string choice = Console.ReadLine();
+                switch (choice)
+                {
+                    case "1":
+                        Console.WriteLine("Välj Id på den bokning som du vill ta bort");
+
+                        foreach (var booking in _dbContext.Booking)
+                        {
+                            Console.WriteLine($": {booking.BookingId}");
+
+                        }
+
+
+                        var bookingIdToDelete = Convert.ToInt32(Console.ReadLine());
+                        var bookingToDelete = _dbContext.Booking.First(b => b.BookingId == bookingIdToDelete);
+
+                        _dbContext.Booking.Remove(bookingToDelete);
+                        _dbContext.SaveChanges();
+
+                        Console.WriteLine("Bokningen har tagits bort");
+                        Console.ReadLine();
+
+                        Console.Clear();
+                        var rec = new Reception();
+                        rec.ReceptionMenu();
+
+                        break;
+
+                        case "0":
+                        Console.Clear();
+                        var reception = new Reception();
+                        reception.ReceptionMenu();
+                        break;
+
+                    default:
+                        Console.WriteLine("Fel inmatning!");
+                        break;
+                }
             }
 
-            Console.WriteLine("Välj Id på den bokning som du vill ta bort");
-
-                foreach (var booking in _dbContext.Booking)
-                {
-                    Console.WriteLine($": {booking.BookingId}");
-
-                }
-
-
-                var bookingIdToDelete = Convert.ToInt32(Console.ReadLine());
-                var bookingToDelete = _dbContext.Booking.First(b => b.BookingId == bookingIdToDelete);
-                
-                _dbContext.Booking.Remove(bookingToDelete);
-                _dbContext.SaveChanges();
-                
-                Console.WriteLine("Bokningen har tagits bort");
-
+           
                 
 
-                Console.Clear();
-                var reception = new Reception();
-                reception.ReceptionMenu();
+                
         }
     }
 }

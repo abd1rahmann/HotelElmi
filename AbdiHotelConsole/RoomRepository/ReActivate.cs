@@ -16,35 +16,57 @@ namespace AbdiHotelConsole.RoomRepository
         }
         public void ReActivateRoom()
         {
-            Console.WriteLine("Återaktivering av rum");
-            Console.WriteLine("\n====================================================================================");
+            Console.WriteLine("===========================================================================");
+            Console.WriteLine("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t");
+            Console.WriteLine("\t1. Återaktivera rum");
+            Console.WriteLine("\t0. Huvudmenyn");
+            Console.WriteLine("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t");
+            Console.WriteLine("===========================================================================");
 
-            Console.WriteLine("\nVälj ID på rummet du vill återaktivera:");
-
-            var activeRooms = _dbContext.Room.Where(r => r.IsAvailable == false).ToList();
-            foreach (var room in activeRooms)
+            bool run = true;
+            while (run)
             {
-                Console.WriteLine($"\nID: {room.RoomId}");
-                Console.WriteLine($"Rumnummer: {room.RoomNumber}");
-                Console.WriteLine($"Typ av rum: {room.TypeOfRoom}");
-                Console.WriteLine($"Extra säng/sängar: {room.ExtraBeds}\n");
+                string choice = Console.ReadLine();
+                switch (choice)
+                {
+                    case "1":
+                        Console.WriteLine("\nVälj ID på rummet du vill återaktivera:");
+
+                        var activeRooms = _dbContext.Room.Where(r => r.IsAvailable == false).ToList();
+                        foreach (var room in activeRooms)
+                        {
+                            Console.WriteLine($"\nID: {room.RoomId}");
+                            Console.WriteLine($"Rumnummer: {room.RoomNumber}");
+                            Console.WriteLine($"Typ av rum: {room.TypeOfRoom}");
+                            Console.WriteLine($"Extra säng/sängar: {room.ExtraBeds}\n");
+                        }
+
+
+                        int roomIdToReActive = Convert.ToInt32(Console.ReadLine());
+
+                        var roomToReActive = _dbContext.Room.FirstOrDefault(g => g.RoomId == roomIdToReActive);
+
+                        roomToReActive.IsAvailable = true;
+
+                        _dbContext.SaveChanges();
+
+                        Console.WriteLine("\nRummet är nu återaktiverad!!");
+                        Console.ReadLine();
+
+                        Console.Clear();
+                        var reception = new Reception();
+                        reception.ReceptionMenu();
+                        break;
+
+                        case "0":
+                        Console.Clear();
+                        var rec = new Reception();
+                        rec.ReceptionMenu();
+                        break;
+                }
             }
 
-
-            int roomIdToReActive = Convert.ToInt32(Console.ReadLine());
-
-            var roomToReActive = _dbContext.Room.FirstOrDefault(g => g.RoomId == roomIdToReActive);
-
-            roomToReActive.IsAvailable = true;
-
-            _dbContext.SaveChanges();
-
-            Console.WriteLine("\nRummet är nu återaktiverad!!");
-            Console.ReadLine();
-
-            Console.Clear();
-            var reception = new Reception();
-            reception.ReceptionMenu();
+            
 
         }
     }

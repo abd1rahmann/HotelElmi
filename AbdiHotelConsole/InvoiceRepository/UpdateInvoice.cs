@@ -17,61 +17,80 @@ namespace AbdiHotelConsole.InvoiceRepository
         }
         public void Update() 
         {
-            Console.WriteLine("Uppdatera en faktura");
-            Console.WriteLine("=====================");
-            Console.WriteLine("\nTryck på '1' för att gå tillbaka ett steg, eller klicka 'enter' för att gå vidare.");
+            Console.WriteLine("===========================================================================");
+            Console.WriteLine("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t");
+            Console.WriteLine("\t1. Uppdatera faktura");
+            Console.WriteLine("\t0. Huvudmenyn");
+            Console.WriteLine("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t");
+            Console.WriteLine("===========================================================================");
 
-            string back = Console.ReadLine();
-
-            if (back == "1")
+            bool run = true;
+            while (run)
             {
-                Console.Clear();
-                var backTo = new InvoiceMenu();
-                backTo.InvoiceMenuChoice();
+                string choice = Console.ReadLine();
+                switch (choice)
+                {
+                    case "1":
+                        foreach (var invoice in _dbContext.Invoice)
+                        {
+                            Console.WriteLine("\n==========================================");
+                            Console.WriteLine($"Id: {invoice.InvoiceId}");
+                            Console.WriteLine($"Fakturanummer: {invoice.InvoiceNumber}");
+                            Console.WriteLine($"Förfallodatum: {invoice.DueDate}");
+                            Console.WriteLine("============================================\n");
+
+                        }
+
+
+                        Console.WriteLine("\nVälj Id på den fakturan som du vill uppdatera");
+                        int invoiceId = 0;
+
+                        while (!int.TryParse(Console.ReadLine(), out invoiceId))
+                        {
+                            Console.WriteLine("Inmatningen är ogiltig. Vänligen ange ett nummer");
+                        }
+                        var invoiceToUpdate = _dbContext.Invoice.First(i => i.InvoiceId == invoiceId);
+
+                        if (invoiceId == null)
+                        {
+                            Console.WriteLine("\nobefintlig faktura! Välj en befintlig faktura.");
+
+                        }
+
+                        Console.WriteLine("\nAnge nytt fakturanummer: ");
+                        int newInvoiceNumber = Convert.ToInt32(Console.ReadLine());
+
+                        Console.WriteLine("\nAnge nya utcheckningsdatum (yyyy-MM-dd): ");
+                        string newDueDateString = Console.ReadLine();
+                        DateTime newDueDateToUpdate = DateTime.ParseExact(newDueDateString, "yyyy-MM-dd", null);
+
+                        invoiceToUpdate.InvoiceNumber = newInvoiceNumber;
+                        invoiceToUpdate.DueDate = newDueDateToUpdate;
+
+                        _dbContext.SaveChanges();
+
+                        Console.WriteLine("\nUppdateringen är genomförd!");
+                        Console.ReadLine();
+
+                        Console.Clear();
+                        var reception = new Reception();
+                        reception.ReceptionMenu();
+                        break;
+
+                        case "0":
+                        Console.Clear();
+                        var rec = new Reception();
+                        break;
+
+                        default: Console.WriteLine("Fel inmatning!");
+                        break;
+                }
             }
 
-            foreach (var invoice in _dbContext.Invoice)
-            {
-                Console.WriteLine("\n==========================================");
-                Console.WriteLine($"Id: {invoice.InvoiceId}");
-                Console.WriteLine($"Fakturanummer: {invoice.InvoiceNumber}");
-                Console.WriteLine($"Förfallodatum: {invoice.DueDate}");
-                Console.WriteLine("============================================\n");
-
-            }
+            
 
 
-            Console.WriteLine("\nVälj Id på den bokningen som du vill uppdatera");
-            int invoiceIdToUpdate = Convert.ToInt32(Console.ReadLine());
-            var invoiceToUpdate = _dbContext.Invoice.First(i => i.InvoiceId == invoiceIdToUpdate);
-
-            if (invoiceIdToUpdate == null)
-            {
-                Console.WriteLine("\nobefintlig bokning! Välj en befintlig bokning.");
-
-            }
-
-            Console.WriteLine("\nAnge nytt fakturanummer: ");
-            int newInvoiceNumber = Convert.ToInt32(Console.ReadLine());
-
-            Console.WriteLine("\nAnge nya utcheckningsdatum (yyyy-MM-dd): ");
-            string newDueDateString = Console.ReadLine();
-            DateTime newDueDateToUpdate = DateTime.ParseExact( newDueDateString, "yyyy-MM-dd", null);
-
-            invoiceToUpdate.InvoiceNumber = newInvoiceNumber; 
-            invoiceToUpdate.DueDate = newDueDateToUpdate;
-
-            _dbContext.SaveChanges();
-
-            Console.WriteLine("\nUppdateringen är genomförd!");
-            Console.ReadLine();
-
-
-            Console.Clear();
-
-
-            var reception = new Reception();
-            reception.ReceptionMenu();
+            
         }
     }
 }

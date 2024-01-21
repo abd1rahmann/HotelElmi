@@ -18,26 +18,47 @@ namespace  AbdiHotelConsole.BookingRepository
 
         public void DisplayBooking() 
         {
-            foreach (var booking in _dbContext.Booking)
+            Console.WriteLine("===========================================================================");
+            Console.WriteLine("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t");
+            Console.WriteLine("\t1. Se betalda bokningar");
+            Console.WriteLine("\t2. Se obetalda bokningar");
+            Console.WriteLine("\t0. Huvudmenyn");
+            Console.WriteLine("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t");
+            Console.WriteLine("===========================================================================");
+
+            bool run = true;
+            while (run)
             {
-                Console.WriteLine("============================================================");
-                Console.WriteLine($"Bokning : { booking.CheckInDate} till {booking.CheckOutDate}");
-                Console.WriteLine("============================================================");
+                string choice = Console.ReadLine();
+                switch (choice)
+                {
+                    case "1":
+                        var paidBookings = _dbContext.Booking.Where(b => b.IsPaid == true).ToList();
+                        foreach (var booking in paidBookings)
+                        {
+                            Console.WriteLine("==================================================================================");
+                            Console.WriteLine($"Bokning ID {booking.BookingId} : {booking.CheckInDate} till {booking.CheckOutDate}");
+                            Console.WriteLine("==================================================================================");
+                        }
+                        break;
+
+                        case "2":
+                        var unPaidBookings = _dbContext.Booking.Where(b => b.IsPaid == false).ToList();
+                        foreach(var booking in unPaidBookings)
+                        {
+                            Console.WriteLine("===================================================================================");
+                            Console.WriteLine($"Bokning ID {booking.BookingId} : {booking.CheckInDate} till {booking.CheckOutDate}");
+                            Console.WriteLine("===================================================================================");
+                        }
+                        break;
+
+                    case "0":
+                        Console.Clear();
+                        var reception = new Reception();
+                        reception.ReceptionMenu();
+                        break;
+                }
             }
-
-            Console.WriteLine("\nTryck på '1' för att gå tillbaka ett steg, eller klicka 'enter' för att gå vidare.");
-
-            string back = Console.ReadLine();
-
-            if (back == "1")
-            {
-                Console.Clear();
-                var backTo = new BookingMenu();
-                backTo.BookingMenuChoice();
-            }
-            Console.Clear();
-            var reception = new Reception();
-            reception.ReceptionMenu();
         }
     }
 }
