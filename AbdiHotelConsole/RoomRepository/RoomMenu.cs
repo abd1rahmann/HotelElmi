@@ -29,7 +29,7 @@ $$ |  $$ |\$$$$$$  |$$ | $$ | $$ |
 ");
 
                 Console.WriteLine("\n========================================================================================\n");
-                Console.WriteLine("1. Lägg till rum\n2. Visa rum\n3. Uppdatera rum\n4. Inaktivera rum\n5. Återaktivera rum\n0. Gå tillbaka ett steg");
+                Console.WriteLine("1. Lägg till rum\n2. Visa rum\n3. Uppdatera rum\n4. Inaktivera rum\n0. Gå tillbaka ett steg");
 
                 var choice = Console.ReadLine();
                 var options = new DbContextOptionsBuilder<ApplicationDbContext>();
@@ -62,10 +62,6 @@ $$ |  $$ |\$$$$$$  |$$ | $$ | $$ |
                             deleteRoom.Delete();
                             break;
 
-                        case "5":
-                            var reActive = new ReActivate(dbContext);
-                            reActive.ReActivateRoom();
-                            break;
                         case "0":
                             var rec = new Reception();
                             rec.ReceptionMenu();

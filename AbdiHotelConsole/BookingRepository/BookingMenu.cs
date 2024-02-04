@@ -32,7 +32,7 @@ $$$$$$$  |\$$$$$$  |$$ | \$$\ $$ |  $$ |$$ |$$ |  $$ |\$$$$$$$ |
                                                                                         
 ");
                 Console.WriteLine("\n===================================================================================================================\n");
-                Console.WriteLine("1. Skapa bokning\n2. Visa bokning\n3. Uppdatera information om bokning\n4. Avsluta bokning\n5. Gå tillbaka ett steg");
+                Console.WriteLine("1. Skapa bokning\n2. Visa bokning\n3. Uppdatera information om bokning\n4. Avsluta bokning\n0. Gå tillbaka ett steg");
 
                 var choice = Console.ReadLine();
                 var options = new DbContextOptionsBuilder<ApplicationDbContext>();

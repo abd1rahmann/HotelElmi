@@ -2,6 +2,7 @@
 using AbdiHotelConsole.GuestRepository;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -48,38 +49,55 @@ namespace  AbdiHotelConsole.BookingRepository
                         Console.WriteLine("Välj Id på den bokningen som du vill uppdatera");
                         int bookingId = 0;
 
-                        while (!int.TryParse(Console.ReadLine(), out bookingId))
-                        {
-                            Console.WriteLine("Inmatningen är ogiltig. Vänligen ange ett nummer");
-                        }
-                        var bookingToUpdate = _dbContext.Booking.FirstOrDefault(b => b.BookingId == bookingId);
+                        var bookingToUpdate = new Booking();
 
-                        if (bookingToUpdate == null)
+                        while (true)
                         {
-                            Console.WriteLine("obefintlig bokning! Välj en befintlig bokning.");
+                            if (!int.TryParse(Console.ReadLine(), out bookingId))
+                            {
+                                Console.WriteLine("Fel inmatning! Ange ett giltigt nummer.");
+                            }
+                            bookingToUpdate = _dbContext.Booking.FirstOrDefault(b => b.BookingId == bookingId);
 
+                            if (bookingToUpdate != null)
+                            {
+                                break;
+                            }
+                            Console.WriteLine("Bokningen existerar inte! Ange ett giltigt rum Id");
                         }
+
+                       
 
                         Console.WriteLine("Ange nya incheckningsdatum (yyyy-MM-dd): ");
                         string checkInDateString = Console.ReadLine();
-                        DateTime bookingCheckInDateToUpdate = DateTime.ParseExact(checkInDateString, "yyyy-MM-dd", null);
 
                         Console.WriteLine("Ange nya utcheckningsdatum (yyyy-MM-dd): ");
                         string checkOutDateString = Console.ReadLine();
-                        DateTime bookingCheckOutDateToUpdate = DateTime.ParseExact(checkOutDateString, "yyyy-MM-dd", null);
 
-                        if (string.IsNullOrWhiteSpace(checkInDateString) || string.IsNullOrWhiteSpace(checkOutDateString))
-                        {
-                            Console.WriteLine("Ogiltigt, försök igen. Alla fält måste fyllas i.");
-                        }
+                       
+                            if (DateTime.TryParseExact(checkInDateString, "yyyy-MM-dd", null, DateTimeStyles.None, out DateTime bookingCheckInDateToUpdate)
+                                && DateTime.TryParseExact(checkOutDateString, "yyyy-MM-dd", null, DateTimeStyles.None, out DateTime bookingCheckOutDateToUpdate))
+                            {
+                                bookingToUpdate.CheckInDate = bookingCheckInDateToUpdate;
+                                bookingToUpdate.CheckOutDate = bookingCheckOutDateToUpdate;
 
-                        bookingToUpdate.CheckInDate = bookingCheckInDateToUpdate;
-                        bookingToUpdate.CheckOutDate = bookingCheckOutDateToUpdate;
+                                _dbContext.SaveChanges();
 
-                        _dbContext.SaveChanges();
+                                Console.WriteLine("Uppdateringen är genomförd!");
+                            Console.WriteLine("Tryck på O för att gå tillbaka till huvudmenyn");
 
-                        Console.WriteLine("Uppdateringen är genomförd!");
-                        Console.ReadLine();
+                            Console.Clear();
+                                var rec = new Reception();
+                                rec.ReceptionMenu();
+                            }
+                            else
+                            {
+                                Console.WriteLine("Ogiltigt datumformat! Klicka enter");
+                            Console.ReadLine();
+                            Console.Clear();
+                            return;
+                            }
+                        
 
                         break;
 

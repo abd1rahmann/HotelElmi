@@ -7,7 +7,6 @@ namespace  AbdiHotelConsole.Data
         public DbSet<Guest> Guest { get; set; }
         public DbSet<Booking> Booking { get; set; }
         public DbSet<Room> Room { get; set; }
-        public DbSet<Invoice> Invoice { get; set; }
 
         public ApplicationDbContext()
         {

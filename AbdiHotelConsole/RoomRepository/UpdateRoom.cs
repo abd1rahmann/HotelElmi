@@ -21,7 +21,7 @@ namespace AbdiHotelConsole.RoomRepository
 
             Console.WriteLine("===========================================================================");
             Console.WriteLine("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t");
-            Console.WriteLine("\t1. Uppdatera bokning");
+            Console.WriteLine("\t1. Uppdatera rum");
             Console.WriteLine("\t0. Huvudmenyn");
             Console.WriteLine("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t");
             Console.WriteLine("===========================================================================");
@@ -35,79 +35,162 @@ namespace AbdiHotelConsole.RoomRepository
                     case "1":
                         foreach (var room in _dbContext.Room)
                         {
-                            Console.WriteLine($"\nRum Id: {room.RoomId}");
+                            Console.WriteLine("\n================================");
+                            Console.WriteLine($"Rum Id: {room.RoomId}");
                             Console.WriteLine($"Rumsnummer: {room.RoomNumber}");
                             Console.WriteLine($"Typ av rum: {room.TypeOfRoom}");
-                            
+                            Console.WriteLine($"Pris/natt: {room.PricePerNight}");
+                            Console.WriteLine($"Extra säng: {room.ExtraBeds}");
+                            Console.WriteLine("==================================\n");
                         }
 
                         Console.WriteLine("Välj Id på det rum som du vill uppdatera");
                         int roomId = 0;
 
-                        while (!int.TryParse(Console.ReadLine(), out roomId))
+                        var roomToUpdate = new Room();
+
+                        while (true)
                         {
-                            Console.WriteLine("Fel inmatning!");
+                            if (!int.TryParse(Console.ReadLine(), out roomId))
+                            {
+                                Console.WriteLine("Fel inmatning! Ange ett giltigt nummer.");
+                            }
+                            roomToUpdate = _dbContext.Room.FirstOrDefault(r => r.RoomId == roomId);
+
+                            if (roomToUpdate != null)
+                            {
+                                break;
+                            }
+                            Console.WriteLine("Rummet existerar inte! Ange ett giltigt rum Id");
                         }
-                        var roomToUpdate = _dbContext.Room.FirstOrDefault(r => r.RoomId == roomId);
+                        
                         Console.Clear();
 
-                        Console.WriteLine("Ange nytt rumsnummer: ");
-                        var roomNumberUpdate = Convert.ToInt32(Console.ReadLine());
+                        
+                        int roomNumberUpdate = 0;
+                        int quit = 0;
 
-                        Console.WriteLine("Ange ny rumstyp (enkelrum/dubbelrum): ");
-                        var typeOfRoomUpdate = Console.ReadLine();
-
-                        if (typeOfRoomUpdate == "1")
+                        while (quit == 0)
                         {
-
-                        }
-
-                        Console.WriteLine("Ange ny status. Tryck 1 för att aktivera eller 2 för att inaktivera: ");
-                        var choice = Console.ReadLine();
-                        switch (choice)
-                        {
-                            case "1":
-                                roomToUpdate.IsAvailable = true;
-                                Console.WriteLine("Rummet är aktiv!");
-                                break;
-
-                            case "2":
-                                roomToUpdate.IsAvailable = false;
-                                Console.WriteLine("Rummet är inaktiverad!");
-                                break;
-                        }
-
-                        Console.WriteLine("Tryck '1' för att kunna lägga till extra säng i ett rum (OBS! Detta gäller endast dubbelrum).\nOm inte, fortsätt vidare.");
-                        string extraSäng = Console.ReadLine();
-                        if (extraSäng == "1")
-                        {
-
-                            if (roomToUpdate.TypeOfRoom.ToLower() == "dubbelrum")
+                            Console.WriteLine("Ange nytt rumsnummer: ");
+                            if(!int.TryParse(Console.ReadLine(), out roomNumberUpdate))
                             {
-                                Console.WriteLine("Ange antal extra sängar (1 eller 2): ");
-                                int extraBeds = Convert.ToInt32(Console.ReadLine());
+                                Console.WriteLine("Fel inmatning! Ange ett giltigt rumsnummer.");
+                            }
+                            var room = _dbContext.Room.FirstOrDefault(r => r.RoomNumber == roomNumberUpdate); 
+                            if (room != null)
+                            {
+                                Console.WriteLine("\nRum nummer finns redan,\n");
+                                quit = 0;
 
-
-                                roomToUpdate.ExtraBeds = extraBeds;
                             }
                             else
                             {
-                                Console.WriteLine("Extra sängar kan endast läggas till i dubbelrum. Återgår till huvudmenyn.");
-                                return;
+                                quit = 1;
+                                break;
                             }
+                        }
 
+                        Console.WriteLine("Ange ny rumstyp (enkelrum/dubbelrum): ");
+                        string typeOfRoomUpdate = Console.ReadLine();
+
+                        if (!typeOfRoomUpdate.ToLower().Equals("enkelrum") && !typeOfRoomUpdate.ToLower().Equals("dubbelrum"))
+                        {
+                            Console.WriteLine("Det måste vara enkelrum eller dubbelrum! Du kommer nu hänvisas till rum menyn");
+                            Console.ReadLine();
+                            Console.Clear();
+                            return;
+                        }
+                        
+
+                        Console.WriteLine("Ange pris/natt: ");
+                        var pricePerNight = 0;
+
+                        while (!int.TryParse(Console.ReadLine(), out pricePerNight))
+                        {
+                            Console.WriteLine("Fel inmatning! Du hänvisas nu till rum menyn. Klicka enter");
+                            Console.ReadLine();
+                            Console.Clear();
+                            return;
+                            
+                        }
+
+
+                        if (string.IsNullOrWhiteSpace(typeOfRoomUpdate))
+                        {
+                            Console.WriteLine("Ogiltigt, försök igen. Alla fält måste fyllas i. Du hänvisas nu till rum menyn. Klicka enter");
+                            Console.ReadLine();
+                            Console.Clear();
+                            return;
+                        }
+
+                        else
+                        {
                             roomToUpdate.RoomNumber = roomNumberUpdate;
                             roomToUpdate.TypeOfRoom = typeOfRoomUpdate;
+                            roomToUpdate.PricePerNight = pricePerNight;
 
-                            _dbContext.SaveChanges();
+                            if (typeOfRoomUpdate.ToLower() == "dubbelrum")
+                            {
+                                Console.WriteLine("\n1. Lägg till extra säng\n2. Gå vidare\n");
+                                string val = Console.ReadLine();
+                                switch (val)
+                                {
+                                    case "1":
+                                        Console.WriteLine("Ange antal extra sängar (1 eller 2): ");
+                                        int extraBeds = 0;
 
-                            Console.WriteLine("Rummet är uppdaterad");
-                            Console.ReadLine();
 
-                            Console.Clear();
-                            var reception = new Reception();
-                            reception.ReceptionMenu();
+                                        while (!int.TryParse(Console.ReadLine(), out extraBeds))
+                                        {
+                                            Console.WriteLine("Fel inmatning!");
+                                        }
+
+                                        if (roomToUpdate.ExtraBeds <= 2)
+                                        {
+                                            Console.WriteLine("Rummet har nått maxgränsen på extra sängar");
+                                            Console.ReadLine();
+                                            return;
+                                        }
+
+                                        roomToUpdate.ExtraBeds = extraBeds;
+
+                                        _dbContext.SaveChanges();
+
+                                        Console.WriteLine("\nRummet är uppdaterad!");
+                                        Console.WriteLine("Tryck på O för att gå tillbaka till huvudmenyn");
+
+                                        Console.Clear();
+                                        var reception = new Reception();
+                                        reception.ReceptionMenu();
+
+                                        break;
+
+                                    case "2":
+                                        _dbContext.SaveChanges();
+
+                                        Console.WriteLine("\nRummet är uppdaterad!");
+                                        Console.WriteLine("Tryck på O för att gå tillbaka till huvudmenyn");
+
+
+                                        Console.Clear();
+                                        var r = new Reception();
+                                        r.ReceptionMenu();
+
+                                        break;
+                                }
+
+
+                            }
                         }
+
+                        _dbContext.SaveChanges();
+                        Console.WriteLine("\nRummet är uppdaterad!");
+                        Console.ReadLine();
+
+                        Console.Clear();
+                        var recep = new Reception();
+                        recep.ReceptionMenu();
                         break; 
                     case "0":
                         Console.Clear();
