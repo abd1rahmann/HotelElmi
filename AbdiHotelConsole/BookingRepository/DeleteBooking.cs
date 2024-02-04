@@ -34,29 +34,54 @@ namespace  AbdiHotelConsole.BookingRepository
                     case "1":
                         Console.WriteLine("Välj Id på den bokning som du vill ta bort");
 
-                        foreach (var booking in _dbContext.Booking)
+                        var validBooking = _dbContext.Booking.Where(b => b.IsValid == true).ToList();
+                        foreach (var booking in validBooking)
                         {
-                            Console.WriteLine($": {booking.BookingId}");
+                            Console.WriteLine($"\nBokning ID: {booking.BookingId}\n");
+                            Console.WriteLine($"Bokningperiod: {booking.CheckInDate} - {booking.CheckOutDate}\n");
 
                         }
 
 
-                        var bookingIdToDelete = Convert.ToInt32(Console.ReadLine());
-                        var bookingToDelete = _dbContext.Booking.First(b => b.BookingId == bookingIdToDelete);
+                        var bookingIdToDelete = 0;
 
-                        _dbContext.Booking.Remove(bookingToDelete);
-                        _dbContext.SaveChanges();
 
-                        Console.WriteLine("Bokningen har tagits bort");
-                        Console.ReadLine();
+                        bool validInput = false;
 
-                        Console.Clear();
-                        var rec = new Reception();
-                        rec.ReceptionMenu();
+                        while (!validInput)
+                        {
+                            string userInput = Console.ReadLine();
 
+                            if (int.TryParse(userInput, out bookingIdToDelete))
+                            {
+                                var bookingToDelete = _dbContext.Booking.FirstOrDefault(b => b.BookingId == bookingIdToDelete);
+
+                                if (bookingToDelete != null)
+                                {
+                                    bookingToDelete.IsValid = false;
+                                    _dbContext.SaveChanges();
+
+                                    Console.WriteLine("Bokningen är inaktiverat!");
+                                    Console.WriteLine("Tryck på O för att gå tillbaka till huvudmenyn");
+
+                                    Console.Clear();
+                                    var recep = new Reception();
+                                    recep.ReceptionMenu();
+                                    validInput = true; 
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Bokningen med det angivna ID:et kunde inte hittas. Ange ett annat ID:");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Inmatningen är ogiltig. Vänligen ange ett nummer:");
+                            }
+                        }
                         break;
 
-                        case "0":
+                    case "0":
                         Console.Clear();
                         var reception = new Reception();
                         reception.ReceptionMenu();

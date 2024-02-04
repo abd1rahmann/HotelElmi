@@ -20,8 +20,8 @@ namespace  AbdiHotelConsole.BookingRepository
         {
             Console.WriteLine("===========================================================================");
             Console.WriteLine("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t");
-            Console.WriteLine("\t1. Se betalda bokningar");
-            Console.WriteLine("\t2. Se obetalda bokningar");
+            Console.WriteLine("\t1. Se befintliga bokningar");
+            Console.WriteLine("\t2. Se obefintliga bokningar");
             Console.WriteLine("\t0. Huvudmenyn");
             Console.WriteLine("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t");
             Console.WriteLine("===========================================================================");
@@ -33,25 +33,41 @@ namespace  AbdiHotelConsole.BookingRepository
                 switch (choice)
                 {
                     case "1":
-                        var paidBookings = _dbContext.Booking.Where(b => b.IsPaid == true).ToList();
-                        foreach (var booking in paidBookings)
+                        var validBooking = _dbContext.Booking.Where(b => b.IsValid == true).ToList();
+                        foreach (var booking in validBooking)
                         {
-                            Console.WriteLine("==================================================================================");
-                            Console.WriteLine($"Bokning ID {booking.BookingId} : {booking.CheckInDate} till {booking.CheckOutDate}");
-                            Console.WriteLine("==================================================================================");
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine("==========================================================================================================");
+                            Console.WriteLine($"Bokning ID {booking.BookingId}|| Bokningen gäller från {booking.CheckInDate} till {booking.CheckOutDate}");
+                            Console.WriteLine("==========================================================================================================");
+                            Console.ResetColor();
                         }
+                        Console.WriteLine("Tryck på O för att gå tillbaka till huvudmenyn");
+
                         break;
 
-                        case "2":
-                        var unPaidBookings = _dbContext.Booking.Where(b => b.IsPaid == false).ToList();
-                        foreach(var booking in unPaidBookings)
+                    case "2":
+                        var inValidBooking = _dbContext.Booking.Where(b => b.IsValid == false).ToList();
+                        if (inValidBooking.Count > 0)
                         {
-                            Console.WriteLine("===================================================================================");
-                            Console.WriteLine($"Bokning ID {booking.BookingId} : {booking.CheckInDate} till {booking.CheckOutDate}");
-                            Console.WriteLine("===================================================================================");
+                            foreach (var booking in inValidBooking)
+                            {
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine("==========================================================================================================");
+                                Console.WriteLine($"Bokning ID {booking.BookingId}|| Bokningen gällde från {booking.CheckInDate} till {booking.CheckOutDate}");
+                                Console.WriteLine("==========================================================================================================");
+                                Console.ResetColor();
+                            }
+                            Console.WriteLine("Tryck på O för att gå tillbaka till huvudmenyn");
+
+                        }
+                        else
+                        {
+                            Console.WriteLine("\nDet finns inga inaktiva gäster.");
+                            Console.WriteLine("Tryck på O för att gå tillbaka till huvudmenyn");
+
                         }
                         break;
-
                     case "0":
                         Console.Clear();
                         var reception = new Reception();

@@ -32,21 +32,58 @@ namespace  AbdiHotelConsole.RoomRepository
                 switch (choice)
                 {
                     case "1":
-                        Console.WriteLine("Välj Id på det rum som du vill inaktivera");
+                        var emptyRoom = _dbContext.Room.Where(g => g.IsAvailable == true).ToList();
 
-                        foreach (var room in _dbContext.Room)
+                        foreach (var room in emptyRoom)
                         {
                             Console.WriteLine($"\nID: {room.RoomId}\nRumsnummer: {room.RoomNumber}\nTyp av rum: {room.TypeOfRoom}\n");
 
                         }
 
-                        var roomIdToDelete = Convert.ToInt32(Console.ReadLine());
-                        var roomToDelete = _dbContext.Room.First(r => r.RoomId == roomIdToDelete);
+                        Console.WriteLine("\nVälj Id på det rum som du vill inaktivera\n");
 
-                        roomToDelete.IsAvailable = false;
+
+                        var roomIdToDelete = 0;
+                        bool validInput = false;
+
+                        while (!validInput)
+                        {
+                            string userInput = Console.ReadLine();
+
+                            if (int.TryParse(userInput, out roomIdToDelete))
+                            {
+                                var roomToDelete = _dbContext.Room.FirstOrDefault(r => r.RoomId == roomIdToDelete);
+
+                                if (roomToDelete != null)
+                                {
+                                    roomToDelete.IsAvailable = false;
+                                    _dbContext.SaveChanges();
+
+                                    Console.WriteLine("Rummet är inaktiverat!");
+                                    Console.WriteLine("Tryck på O för att gå tillbaka till huvudmenyn");
+                                    Console.ReadLine();
+
+                                    Console.Clear();
+                                    var recep = new Reception();
+                                    recep.ReceptionMenu();
+                                    validInput = true; 
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Rummet med det angivna ID:et kunde inte hittas. Ange ett annat ID:");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Inmatningen är ogiltig. Vänligen ange ett nummer:");
+                            }
+                        }
+                        
+
                         _dbContext.SaveChanges();
 
                         Console.WriteLine("Rummet är inaktiverat!");
+                        Console.WriteLine("Tryck på O för att gå tillbaka till huvudmenyn");
                         Console.ReadLine();
                         
                         Console.Clear();

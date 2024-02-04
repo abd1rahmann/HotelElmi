@@ -3,7 +3,6 @@ using  AbdiHotelConsole.GuestRepository;
 using AbdiHotelLibrary;
 using  AbdiHotelConsole.BookingRepository;
 using  AbdiHotelConsole.RoomRepository;
-using  AbdiHotelConsole.InvoiceRepository;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -17,8 +16,8 @@ namespace  AbdiHotelConsole
 
         public void ReceptionMenu () 
         {
-            int run = 1;
-            while (run == 1)
+            bool run = true;
+            while (run)
             {
                
                 Console.ForegroundColor = ConsoleColor.Red;
@@ -36,7 +35,7 @@ namespace  AbdiHotelConsole
 ");
                 Console.ResetColor();
                
-                Console.WriteLine(" 1. Gäst\n 2. Rum\n 3. Bokning\n 4. Faktura");
+                Console.WriteLine(" 1. Gäst\n 2. Rum\n 3. Bokning");
 
                 
                     string c = Console.ReadLine();
@@ -58,10 +57,6 @@ namespace  AbdiHotelConsole
                             booking.BookingMenuChoice();
                             break;
 
-                        case "4":
-                        var invoice = new InvoiceMenu();
-                        invoice.InvoiceMenuChoice();
-                        break;
                         default:
                             Console.WriteLine("\nFel inmatning! Vänligen välj ett av alternativen.\n");
                             break;

@@ -7,7 +7,7 @@ using AbdiHotelConsole.Data;
 using AbdiHotelConsole.GuestRepository;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 
-namespace  AbdiHotelConsole.RoomRepository
+namespace AbdiHotelConsole.RoomRepository
 {
     public class ShowRoom
     {
@@ -26,7 +26,7 @@ namespace  AbdiHotelConsole.RoomRepository
             Console.WriteLine("\t2. Se upptagna rum ");
             Console.WriteLine("\t0. Huvudmenyn");
             Console.WriteLine("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t");
-            Console.WriteLine("==========================================================================="); 
+            Console.WriteLine("===========================================================================");
             bool run = true;
             while (run)
             {
@@ -39,30 +39,45 @@ namespace  AbdiHotelConsole.RoomRepository
                         foreach (var room in availableRooms)
                         {
 
-
-                            Console.WriteLine("===============================================");
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine("\n===============================================");
+                            Console.WriteLine($"ID: {room.RoomId}                               ");
                             Console.WriteLine($"Rumsnummer: {room.RoomNumber}                 ");
                             Console.WriteLine($"Rumstyp: {room.TypeOfRoom}                    ");
                             Console.WriteLine($"Extra säng/sängar: {room.ExtraBeds}           ");
-                            Console.WriteLine("================================================");
-                            
-                            
+                            Console.WriteLine("================================================\n");
+                            Console.ResetColor();
                         }
+                        
+                        Console.WriteLine("Tryck på O för att gå tillbaka till huvudmenyn");
+
                         break;
 
                     case "2":
 
                         var preoccupiedRooms = _dbContext.Room.Where(r => r.IsAvailable == false).ToList();
-                        foreach (var room in preoccupiedRooms)
+                        if (preoccupiedRooms.Count > 0)
                         {
-                            Console.WriteLine("===============================================");
-                            Console.WriteLine($"Rumsnummer: {room.RoomNumber}                 ");
-                            Console.WriteLine($"Rumstyp: {room.TypeOfRoom}                    ");
-                            Console.WriteLine($"Extra säng/sängar: {room.ExtraBeds}           ");
-                            Console.WriteLine("================================================");
+                            foreach (var room in preoccupiedRooms)
+                            {
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine("===============================================");
+                                Console.WriteLine($"ID: {room.RoomId}                             ");
+                                Console.WriteLine($"Rumsnummer: {room.RoomNumber}                 ");
+                                Console.WriteLine($"Rumstyp: {room.TypeOfRoom}                    ");
+                                Console.WriteLine($"Extra säng/sängar: {room.ExtraBeds}           ");
+                                Console.WriteLine("================================================");
+                                Console.ResetColor();
+                            }
+
+                            Console.WriteLine("Tryck på O för att gå tillbaka till huvudmenyn");
 
                         }
-
+                        else
+                        {
+                            Console.WriteLine("\nDet finns inga inaktiva gäster.");
+                            Console.WriteLine("Tryck på O för att gå tillbaka till huvudmenyn");
+                        }
                         break;
 
                     case "0":

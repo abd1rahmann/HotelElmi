@@ -31,7 +31,9 @@ namespace AbdiHotelConsole.GuestRepository
                 switch (choice)
                 {
                     case "1":
-                        foreach (var guest in _dbContext.Guest)
+
+                        var activeGuests = _dbContext.Guest.Where(g => g.IsActive == true).ToList();
+                        foreach (var guest in activeGuests)
                         {
                             Console.WriteLine("\n===========================================");
                             Console.WriteLine($"ID: {guest.GuestId}");
@@ -43,20 +45,44 @@ namespace AbdiHotelConsole.GuestRepository
                         }
 
                         Console.WriteLine("Välj Id på den gäst som du vill ta inaktivera");
-                        var guestIdToDelete = Convert.ToInt32(Console.ReadLine());
-                        var guestToDelete = _dbContext.Guest.First(p => p.GuestId == guestIdToDelete);
-                        guestToDelete.IsActive = false;
+                        var guestIdToDelete = 0;
+                        bool validInput = false;
 
-                        _dbContext.SaveChanges();
-                        Console.WriteLine("Gästen är inaktiverad!");
-                        Console.ReadLine();
-                        
-                        Console.Clear();
-                        var rec = new Reception();
-                        rec.ReceptionMenu();
+                        while (!validInput)
+                        {
+                            string userInput = Console.ReadLine();
+
+                            if (int.TryParse(userInput, out guestIdToDelete))
+                            {
+                                var guestToDelete = _dbContext.Guest.FirstOrDefault(g => g.GuestId == guestIdToDelete);
+
+                                if (guestToDelete != null)
+                                {
+                                    guestToDelete.IsActive = false;
+                                    _dbContext.SaveChanges();
+
+                                    Console.WriteLine("Gästen är inaktiverat!");
+                                    Console.WriteLine("Tryck på O för att gå tillbaka till huvudmenyn");
+                                    Console.ReadLine();
+
+                                    Console.Clear();
+                                    var recep = new Reception();
+                                    recep.ReceptionMenu();
+                                    validInput = true;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Gästen med det angivna ID:et kunde inte hittas. Ange ett annat ID:");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Inmatningen är ogiltig. Vänligen ange ett nummer:");
+                            }
+                        }
                         break;
 
-                        case "0":
+                    case "0":
 
                         Console.Clear();
                         var reception = new Reception();

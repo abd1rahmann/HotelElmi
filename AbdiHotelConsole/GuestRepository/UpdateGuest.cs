@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,7 +23,7 @@ namespace  AbdiHotelConsole.GuestRepository
 
             Console.WriteLine("===========================================================================");
             Console.WriteLine("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t");
-            Console.WriteLine("\t1. Uppdatera bokning");
+            Console.WriteLine("\t1. Uppdatera gäst");
             Console.WriteLine("\t0. Huvudmenyn");
             Console.WriteLine("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t");
             Console.WriteLine("===========================================================================");
@@ -44,19 +45,31 @@ namespace  AbdiHotelConsole.GuestRepository
                             Console.WriteLine("====================");
                         }
 
+
+
                         Console.WriteLine("Välj Id på den gäst som du vill uppdatera");
                         int guestId = 0;
 
-                        while (!int.TryParse(Console.ReadLine(), out guestId))
+                        var guestToUpdate = new Guest();
+
+                        while (true)
                         {
-                            Console.WriteLine("Fel inmatning!");
-                        }
-                        var guestToUpdate = _dbContext.Guest.FirstOrDefault(g => g.GuestId == guestId);
-                        if (guestToUpdate == null)
-                        {
-                            Console.WriteLine("Ogiltigt ID!");
+                            if (!int.TryParse(Console.ReadLine(), out guestId))
+                            {
+                                Console.WriteLine("Fel inmatning! Ange ett giltigt nummer.");
+                            }
+                            guestToUpdate = _dbContext.Guest.FirstOrDefault(g => g.GuestId == guestId);
+
+                            if (guestToUpdate != null)
+                            {
+                                break;
+                            }
+                            Console.WriteLine("Gästen existerar inte! Ange ett giltigt rum Id");
                         }
 
+                        Console.Clear();
+                      
+                       
                         Console.WriteLine("Ange förnamn: ");
                         var guestFirstNameUpdate = Console.ReadLine();
 
@@ -72,20 +85,33 @@ namespace  AbdiHotelConsole.GuestRepository
                         if (string.IsNullOrWhiteSpace(guestFirstNameUpdate) || string.IsNullOrWhiteSpace(guestLastNameUpdate) || string.IsNullOrWhiteSpace(guestEmailUpdate) || string.IsNullOrWhiteSpace(guestAddressUpdate))
                         {
                             Console.WriteLine("Ogiltigt, försök igen. Alla fält måste fyllas i.");
+                            Console.ReadLine();
+                            Console.Clear();
+                            return;
                         }
 
-                        guestToUpdate.GuestFirstName = guestFirstNameUpdate;
-                        guestToUpdate.GuestLastName = guestLastNameUpdate;
-                        guestToUpdate.GuestEmail = guestEmailUpdate;
-                        guestToUpdate.Address = guestAddressUpdate;
+                        if (!guestFirstNameUpdate.All(char.IsLetter) || !guestLastNameUpdate.All(char.IsLetter))
+                        {
+                            Console.WriteLine("Ogiltigt, försök igen. Förnamn och efternamn får endast innehålla bokstäver. Klicka enter");
+                            Console.ReadLine();
+                            Console.Clear();
+                            return;
+                        }
+                            guestToUpdate.GuestFirstName = guestFirstNameUpdate;
+                            guestToUpdate.GuestLastName = guestLastNameUpdate;
+                            guestToUpdate.GuestEmail = guestEmailUpdate;
+                            guestToUpdate.Address = guestAddressUpdate;
 
-                        _dbContext.SaveChanges();
+                            _dbContext.SaveChanges();
 
-                        Console.WriteLine("Uppdateringen är genomförd!");
+                            Console.WriteLine("Uppdateringen är genomförd!");
+                            Console.WriteLine("Tryck på O för att gå tillbaka till huvudmenyn");
 
-                        Console.Clear();
-                        var reception = new Reception();
-                        reception.ReceptionMenu();
+                            Console.Clear();
+                            var reception = new Reception();
+                            reception.ReceptionMenu();
+                        
+
                         break;
 
                     case "0":

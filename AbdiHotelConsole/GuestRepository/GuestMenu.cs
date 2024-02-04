@@ -28,7 +28,7 @@ $$ |  $$ |$$  __$$ | \____$$\  $$ |$$\
                                        
 ");
                 Console.WriteLine("\n============================================================================================================\n");
-                Console.WriteLine("1. Lägg till gäst\n2. Visa gäst\n3. Uppdatera information om gäst\n4. Inaktivera gäst\n5. Återaktivera gäst\n0. Gå tillbaka till huvudmenyn");
+                Console.WriteLine("1. Lägg till gäst\n2. Visa gäst\n3. Uppdatera information om gäst\n4. Inaktivera gäst\n0. Gå tillbaka till huvudmenyn");
 
                 var choice = Console.ReadLine();
                 var options = new DbContextOptionsBuilder<ApplicationDbContext>();
@@ -58,11 +58,6 @@ $$ |  $$ |$$  __$$ | \____$$\  $$ |$$\
                         case "4":
                             var deleteGuest = new DeleteGuest(dbContext);
                             deleteGuest.Delete();
-                            break;
-
-                        case "5":
-                            var reActive = new ReActive(dbContext);
-                            reActive.ReActivateGuest();
                             break;
 
                         case "0":

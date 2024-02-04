@@ -41,23 +41,40 @@ namespace  AbdiHotelConsole.GuestRepository
                 switch (choice)
                 {
                     case "1":
-                        Console.Write("Ange gästens förnamn: ");
-                        string guestFirstName = Console.ReadLine();
+                        string guestFirstName;
+                        string guestLastName;
+                        string guestEmail;
+                        string address;
 
-                        Console.Write("Ange gästens efternamn: ");
-                        string guestLastName = Console.ReadLine();
-
-                        Console.Write("Ange gästens e-postadress: ");
-                        string guestEmail = Console.ReadLine();
-
-                        Console.Write("Ange gästens adress: ");
-                        string address = Console.ReadLine();
-
-                        if (string.IsNullOrWhiteSpace(guestFirstName) || string.IsNullOrWhiteSpace(guestLastName) || string.IsNullOrWhiteSpace(guestEmail) || string.IsNullOrWhiteSpace(address))
+                        while (true)
                         {
-                            Console.WriteLine("Ogiltigt, försök igen. Alla fält måste fyllas i.");
+                            Console.Write("nAnge gästens förnamn: ");
+                            guestFirstName = Console.ReadLine();
+
+                            Console.Write("Ange gästens efternamn: ");
+                            guestLastName = Console.ReadLine();
+
+                            Console.Write("Ange gästens e-postadress: \n");
+                            guestEmail = Console.ReadLine();
+
+                            Console.Write("Ange gästens adress: ");
+                            address = Console.ReadLine();
+                            if (string.IsNullOrWhiteSpace(guestFirstName) || string.IsNullOrWhiteSpace(guestLastName) || string.IsNullOrWhiteSpace(guestEmail) || string.IsNullOrWhiteSpace(address))
+                            {
+                                Console.WriteLine("\nOgiltigt, försök igen. Alla fält måste fyllas i\n.");
+                                continue;
+
+                            }
+
+                            if (!guestFirstName.All(char.IsLetter) || !guestLastName.All(char.IsLetter))
+                            {
+                                Console.WriteLine("\nOgiltigt, försök igen. Förnamn och efternamn får endast innehålla bokstäver. Försök igen\n");
+                                continue;
+                            }
+                            break;
                         }
-                        
+                       
+
                         guest.GuestFirstName = guestFirstName;
                         guest.GuestLastName = guestLastName;
                         guest.GuestEmail = guestEmail;
@@ -66,8 +83,9 @@ namespace  AbdiHotelConsole.GuestRepository
                         _dbContext.Guest.Add(guest);
                         _dbContext.SaveChanges();
 
-                        Console.WriteLine("Gästen är registrerad!");
-                        Console.ReadLine();
+                        Console.WriteLine("\n\nGästen är registrerad!\n\n");
+                        Console.WriteLine("\nTryck på O för att gå tillbaka till huvudmenyn");
+
 
                         Console.Clear();
                         var rec = new Reception();
@@ -81,7 +99,7 @@ namespace  AbdiHotelConsole.GuestRepository
                         break;
 
                     default:
-                        Console.WriteLine("Fel inmatning!");
+                        Console.WriteLine("\nFel inmatning!");
                         break;
                 }
             }

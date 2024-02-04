@@ -15,8 +15,11 @@ namespace  AbdiHotelConsole.Data
         public int RoomNumber { get; set; }
         public string TypeOfRoom { get; set; }
         public bool IsAvailable { get; set; }
+        public DateTime BookingStartTime { get; set; }
+        public DateTime BookingEndTime { get; set; }
         public int ExtraBeds { get; set; }
         public decimal PricePerNight { get; set; }
+        public ICollection<Booking> Bookings { get; set; }
 
     }
 }

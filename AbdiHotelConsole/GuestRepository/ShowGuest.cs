@@ -24,7 +24,7 @@ namespace  AbdiHotelConsole.GuestRepository
             Console.WriteLine("===========================================================================");
             Console.WriteLine("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t");
             Console.WriteLine("\t1. Se aktiva gäster");
-            Console.WriteLine("\t2. Se alla gäster");
+            Console.WriteLine("\t2. Se inaktiva gäster");
             Console.WriteLine("\t0. Huvudmenyn");
             Console.WriteLine("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t");
             Console.WriteLine("===========================================================================");
@@ -39,22 +39,44 @@ namespace  AbdiHotelConsole.GuestRepository
                         var activeGuests = _dbContext.Guest.Where(g => g.IsActive == true).ToList();
                         foreach (var guest in activeGuests)
                         {
-                        Console.WriteLine($"\nFörnamn: {guest.GuestFirstName}");
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine($"\nID: {guest.GuestId}");
+                            Console.WriteLine($"\nFörnamn: {guest.GuestFirstName}");
                         Console.WriteLine($"Efternamn: {guest.GuestLastName}");
                         Console.WriteLine($"Email: {guest.GuestEmail}");
                         Console.WriteLine($"Address: {guest.Address}\n");
+                            Console.ResetColor();
                         }
+                        Console.WriteLine("Tryck på O för att gå tillbaka till huvudmenyn");
+
                         break;
 
                     case "2":
                     
-                        foreach (var guest in _dbContext.Guest) 
+                        var inActiveGuests = _dbContext.Guest.Where(g => g.IsActive == false).ToList();
+                        if (inActiveGuests.Count > 0)
                         {
-                        Console.WriteLine($"\nFörnamn: {guest.GuestFirstName}");
-                        Console.WriteLine($"Efternamn: {guest.GuestLastName}");
-                        Console.WriteLine($"Email: {guest.GuestEmail}");
-                        Console.WriteLine($"Address: {guest.Address}\n");
+                            foreach (var guest in inActiveGuests)
+                            {
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine($"\nID: {guest.GuestId}");
+                                Console.WriteLine($"\nFörnamn: {guest.GuestFirstName}");
+                                Console.WriteLine($"Efternamn: {guest.GuestLastName}");
+                                Console.WriteLine($"Email: {guest.GuestEmail}");
+                                Console.WriteLine($"Address: {guest.Address}\n");
+                                Console.ResetColor();
+                            }
+                            Console.WriteLine("Tryck på O för att gå tillbaka till huvudmenyn");
+
                         }
+
+                        else
+                        {
+                            Console.WriteLine("\nDet finns inga inaktiva gäster.");
+                            Console.WriteLine("Tryck på O för att gå tillbaka till huvudmenyn");
+
+                        }
+
                         break;
                    
                         case "0":
